@@ -1,0 +1,56 @@
+# To improve query performance, we strongly suggest adding indexes to any field that you plan to filter or sort by
+# Add the `@index` or `@index(unique: true)` annotation after any non-key field
+# https://academy.subquery.network/build/graphql.html#indexing-by-non-primary-key-field
+
+type Transfer @entity {
+  id: ID! # Transaction hash
+  blockHeight: BigInt
+  to: String!
+  from: String!
+  value: BigInt!
+  contractAddress: String!
+}
+
+type Approval @entity {
+  id: ID! # Transaction hash
+  blockHeight: BigInt
+  owner: String!
+  spender: String!
+  value: BigInt!
+  contractAddress: String!
+}
+
+type StakedRecord @entity {
+  id: ID! # Transaction hash
+  pool: String,
+  blockHeight: BigInt
+  staker: String,
+  stake_token: String,
+  stake_amount: BigInt,
+  mint_receiver: String,
+  mint_token: String,
+  mint_amount: BigInt,
+  timestamp: Date
+}
+
+type Staker @entity {
+  id: ID!, # kecash256( pool, staker)
+  pool: String, # stake pool address
+  staker: String, # staker address
+  stake_amount: BigInt, # total staked amount
+  mint_amount: BigInt, # total minted amount
+}
+
+type UnstakeAccepted @entity {
+  id: ID! # Transaction hash
+  accept_id: BigInt, 
+  pool: String,
+  blockHeight: BigInt
+  staker: String,
+  unstake_token: String,
+  unstake_amount: BigInt,
+  redeem_earning: BigInt,
+  redeem_eth: BigInt,
+  status: String, # "pending", "success", "failed"
+  timestamp: Date
+}
