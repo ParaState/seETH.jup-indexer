@@ -58,7 +58,7 @@ const project: EthereumProject = {
         // Must be a key of assets
         abi: "erc20",
         // # this is the contract address for wrapped ether https://etherscan.io/address/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
-        address: "0x864fD5066Ed23Ee7CC648342c950e7609cA629da",
+        address: "0x52ee70f35f6a638fe80Dea2190E0A21367bb03E5",
       },
       assets: new Map([["erc20", { file: "./abis/erc20.abi.json" }]]),
       mapping: {
@@ -97,7 +97,7 @@ const project: EthereumProject = {
       startBlock: 660493,
       options: {
         abi: "ssETH",
-        address: "0x864fD5066Ed23Ee7CC648342c950e7609cA629da"
+        address: "0x52ee70f35f6a638fe80Dea2190E0A21367bb03E5"
       },
       assets: new Map([["ssETH", { file: "./abis/ssETH.abi.json" }]]),
       mapping: {
