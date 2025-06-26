@@ -52,7 +52,7 @@ const project: EthereumProject = {
   dataSources: [
     {
       kind: EthereumDatasourceKind.Runtime,
-      startBlock: 4719568,
+      startBlock: 660493,
 
       options: {
         // Must be a key of assets
@@ -94,7 +94,7 @@ const project: EthereumProject = {
     },
     {
       kind: EthereumDatasourceKind.Runtime,
-      startBlock: 4719568,
+      startBlock: 660493,
       options: {
         abi: "ssETH",
         address: "0x864fD5066Ed23Ee7CC648342c950e7609cA629da"
