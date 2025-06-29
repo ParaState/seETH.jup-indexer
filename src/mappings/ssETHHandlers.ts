@@ -1,14 +1,12 @@
 import { Staker, StakedRecord, UnstakeAccepted } from "../types";
 import {
     StakedLog, UnstakeAcceptedLog
-} from "../types/abi-interfaces/SsETHAbi";
-import { BigNumber, utils } from "ethers";
+} from "../types/abi-interfaces/SsethAbi";
 import assert from "assert";
 
 export async function handleStakedLog( staked: StakedLog): Promise<void> {
     logger.info(`New staked transaction log at block ${staked.blockNumber}`);
     assert(staked.args, "No staked.args");
-
     const record = StakedRecord.create({
         id: staked.transactionHash,
         pool: staked.address,
@@ -37,11 +35,9 @@ export async function handleStakedLog( staked: StakedLog): Promise<void> {
         });
 
     } else {
-        const tmp_mint_amount = BigNumber.from(staker.mint_amount);
-        const tmp_stake_amount = BigNumber.from(staker.stake_amount);
 
-        staker.mint_amount = staked.args.minted.add(tmp_mint_amount).toBigInt();
-        staker.stake_amount = staked.args.amount.add(tmp_stake_amount).toBigInt();
+        staker.mint_amount = staked.args.minted.toBigInt() + staker.mint_amount!;
+        staker.stake_amount = staked.args.amount.toBigInt() + staker.stake_amount!;
     }
 
     await staker.save();

@@ -52,13 +52,13 @@ const project: EthereumProject = {
   dataSources: [
     {
       kind: EthereumDatasourceKind.Runtime,
-      startBlock: 660493,
+      startBlock: 700524,
 
       options: {
         // Must be a key of assets
         abi: "erc20",
         // # this is the contract address for wrapped ether https://etherscan.io/address/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
-        address: "0x52ee70f35f6a638fe80Dea2190E0A21367bb03E5",
+        address: "0x95b691fFD2e2B2dF72F2D58E1A0ac8178b3bc0B0",
       },
       assets: new Map([["erc20", { file: "./abis/erc20.abi.json" }]]),
       mapping: {
@@ -94,28 +94,27 @@ const project: EthereumProject = {
     },
     {
       kind: EthereumDatasourceKind.Runtime,
-      startBlock: 660493,
+      startBlock: 700524,
       options: {
-        abi: "ssETH",
-        address: "0x52ee70f35f6a638fe80Dea2190E0A21367bb03E5"
+        abi: "sseth",
+        address: "0x95b691fFD2e2B2dF72F2D58E1A0ac8178b3bc0B0"
       },
-      assets: new Map([["ssETH", { file: "./abis/ssETH.abi.json" }]]),
+      assets: new Map([["sseth", { file: "./abis/sseth.abi.json" }]]),
       mapping: {
         file: "./dist/index.js",
         handlers: [
           {
             kind: EthereumHandlerKind.Event,
-            handler: "handleStaked",
+            handler: "handleStakedLog",
             filter: {
               topics: [
-                "Staked(address indexed user, address receiver, uint256 amount, uint256 minted)",
-                "UnstakeAccepted(uint256 accept_id, address indexed staker, address receiver, uint256 unstake_amount, uint256 redeem_earning, uint256 redeem_eth)"
+                "Staked(address indexed staker, address receiver, uint256 amount, uint256 minted)"
               ],
             }
           },
           {
             kind: EthereumHandlerKind.Event,
-            handler: "handleUnstakeAccepted",
+            handler: "handleUnstakeAcceptedLog",
             filter: {
               topics: [
                 "UnstakeAccepted(uint256 accept_id, address indexed staker, address receiver, uint256 unstake_amount, uint256 redeem_earning, uint256 redeem_eth)"
