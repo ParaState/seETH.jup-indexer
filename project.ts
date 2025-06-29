@@ -103,12 +103,21 @@ const project: EthereumProject = {
       mapping: {
         file: "./dist/index.js",
         handlers: [
-            {
+          {
             kind: EthereumHandlerKind.Event,
-            handler: "Staked",
+            handler: "handleStakedLog",
             filter: {
               topics: [
                 "Staked(address indexed user, address receiver, uint256 amount, uint256 minted)",
+                "UnstakeAccepted(uint256 accept_id, address indexed staker, address receiver, uint256 unstake_amount, uint256 redeem_earning, uint256 redeem_eth)"
+              ],
+            }
+          },
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handleUnstakeAcceptedLog",
+            filter: {
+              topics: [
                 "UnstakeAccepted(uint256 accept_id, address indexed staker, address receiver, uint256 unstake_amount, uint256 redeem_earning, uint256 redeem_eth)"
               ],
             }
