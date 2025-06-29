@@ -105,7 +105,7 @@ const project: EthereumProject = {
         handlers: [
           {
             kind: EthereumHandlerKind.Event,
-            handler: "handleStakedLog",
+            handler: "handleStaked",
             filter: {
               topics: [
                 "Staked(address indexed user, address receiver, uint256 amount, uint256 minted)",
@@ -115,7 +115,7 @@ const project: EthereumProject = {
           },
           {
             kind: EthereumHandlerKind.Event,
-            handler: "handleUnstakeAcceptedLog",
+            handler: "handleUnstakeAccepted",
             filter: {
               topics: [
                 "UnstakeAccepted(uint256 accept_id, address indexed staker, address receiver, uint256 unstake_amount, uint256 redeem_earning, uint256 redeem_eth)"
