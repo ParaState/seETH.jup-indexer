@@ -2,7 +2,7 @@ import { Approval, Transfer } from "../types";
 import {
   ApproveTransaction,
   TransferLog,
-} from "../types/abi-interfaces/Erc20Abi";
+} from "../types/abi-interfaces/Erc20";
 import assert from "assert";
 
 export async function handleLog(log: TransferLog): Promise<void> {

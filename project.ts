@@ -57,7 +57,7 @@ const project: EthereumProject = {
         // # this is the contract address for wrapped ether https://etherscan.io/address/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
         address: SSETH_ADDRESS,
       },
-      assets: new Map([["erc20", { file: "./abis/erc20.abi.json" }]]),
+      assets: new Map([["erc20", { file: "./abis/erc20.json" }]]),
       mapping: {
         file: "./dist/index.js",
         handlers: [
@@ -94,7 +94,7 @@ const project: EthereumProject = {
         abi: "sseth",
         address: SSETH_ADDRESS,
       },
-      assets: new Map([["sseth", { file: "./abis/sseth.abi.json" }]]),
+      assets: new Map([["sseth", { file: "./abis/sseth.json" }]]),
       mapping: {
         file: "./dist/index.js",
         handlers: [

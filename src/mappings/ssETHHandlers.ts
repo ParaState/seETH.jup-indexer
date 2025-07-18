@@ -1,7 +1,7 @@
 import { Staker, StakedRecord, UnstakeAccepted } from "../types";
 import {
     StakedLog, UnstakeAcceptedLog
-} from "../types/abi-interfaces/SsethAbi";
+} from "../types/abi-interfaces/Sseth";
 import assert from "assert";
 
 export async function handleStakedLog( staked: StakedLog): Promise<void> {
