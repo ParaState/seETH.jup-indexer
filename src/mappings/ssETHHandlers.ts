@@ -12,10 +12,10 @@ export async function handleStakedLog( staked: StakedLog): Promise<void> {
         pool: staked.address,
         blockHeight: BigInt(staked.blockNumber),
         staker: staked.args.staker,
-        stake_token: "0x000",
-        stake_amount: staked.args.amount.toBigInt(),
-        mint_receiver: staked.args.receiver,
-        mint_amount: staked.args.minted.toBigInt(),
+        stakeToken: "0x000",
+        stakeAmount: staked.args.amount.toBigInt(),
+        mintReceiver: staked.args.receiver,
+        mintAmount: staked.args.minted.toBigInt(),
         timestamp: new Date(Number(staked.transaction.blockTimestamp)),
     });
 
@@ -30,14 +30,14 @@ export async function handleStakedLog( staked: StakedLog): Promise<void> {
             id: staker_id,
             pool: staked.address,
             staker: staked.args.staker,
-            stake_amount: staked.args.amount.toBigInt(),
-            mint_amount: staked.args.minted.toBigInt()
+            stakeAmount: staked.args.amount.toBigInt(),
+            mintAmount: staked.args.minted.toBigInt()
         });
 
     } else {
 
-        staker.mint_amount = staked.args.minted.toBigInt() + staker.mint_amount!;
-        staker.stake_amount = staked.args.amount.toBigInt() + staker.stake_amount!;
+        staker.mintAmount = staked.args.minted.toBigInt() + staker.mintAmount!;
+        staker.stakeAmount = staked.args.amount.toBigInt() + staker.stakeAmount!;
     }
 
     await staker.save();
@@ -50,14 +50,14 @@ async function handleUnstakeAcceptedLog( unstake: UnstakeAcceptedLog): Promise<v
 
     const record = UnstakeAccepted.create({
         id: unstake.transactionHash,
-        accept_id: unstake.args.accept_id.toBigInt(),
+        acceptId: unstake.args.accept_id.toBigInt(),
         pool: unstake.address,
         blockHeight: BigInt(unstake.blockNumber),
         staker: unstake.args.staker,
-        unstake_token: unstake.address,
-        unstake_amount: unstake.args.unstake_amount.toBigInt(),
-        redeem_earning: unstake.args.redeem_earning.toBigInt(),
-        redeem_eth: unstake.args.redeem_eth.toBigInt(),
+        unstakeToken: unstake.address,
+        unstakeAmount: unstake.args.unstake_amount.toBigInt(),
+        redeemEarning: unstake.args.redeem_earning.toBigInt(),
+        redeemEth: unstake.args.redeem_eth.toBigInt(),
         status: "pending", // Initial status is pending
         timestamp: new Date(Number(unstake.transaction.blockTimestamp)),
     });

@@ -25,11 +25,11 @@ type StakedRecord @entity {
   pool: String,
   blockHeight: BigInt
   staker: String,
-  stake_token: String,
-  stake_amount: BigInt,
-  mint_receiver: String,
-  mint_token: String,
-  mint_amount: BigInt,
+  stakeToken: String,
+  stakeAmount: BigInt,
+  mintReceiver: String,
+  mintToken: String,
+  mintAmount: BigInt,
   timestamp: Date
 }
 
@@ -37,20 +37,21 @@ type Staker @entity {
   id: ID!, # kecash256( pool, staker)
   pool: String, # stake pool address
   staker: String, # staker address
-  stake_amount: BigInt, # total staked amount
-  mint_amount: BigInt, # total minted amount
+  stakeAmount: BigInt, # total staked amount
+  mintAmount: BigInt, # total minted amount
 }
 
 type UnstakeAccepted @entity {
   id: ID! # Transaction hash
-  accept_id: BigInt, 
+  acceptId: BigInt, 
   pool: String,
   blockHeight: BigInt
   staker: String,
-  unstake_token: String,
-  unstake_amount: BigInt,
-  redeem_earning: BigInt,
-  redeem_eth: BigInt,
+  unstakeToken: String,
+  unstakeAmount: BigInt,
+  redeemEarning: BigInt,
+  redeemEth: BigInt,
+  redeemUsdc: BigInt,
   status: String, # "pending", "success", "failed"
   timestamp: Date
 }

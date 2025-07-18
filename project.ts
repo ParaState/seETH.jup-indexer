@@ -110,7 +110,7 @@ const project: EthereumProject = {
             handler: "handleUnstakeAcceptedLog",
             filter: {
               topics: [
-                "UnstakeAccepted(uint256 accept_id, address indexed staker, address receiver, uint256 unstake_amount, uint256 redeem_earning, uint256 redeem_eth)",
+                "UnstakeAccepted(uint256 accept_id, address indexed staker, address receiver, uint256 unstake_amount, uint256 redeem_earning, uint256 redeem_eth, uint256 redeem_usdc)",
               ],
             },
           },

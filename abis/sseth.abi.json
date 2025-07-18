@@ -125,6 +125,25 @@
         "inputs": [
             {
                 "indexed": false,
+                "internalType": "address",
+                "name": "receiver",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "Borrowed",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
                 "internalType": "uint64",
                 "name": "version",
                 "type": "uint64"
@@ -227,9 +246,28 @@
                 "internalType": "uint256",
                 "name": "redeem_eth",
                 "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "redeem_usdc",
+                "type": "uint256"
             }
         ],
         "name": "UnstakeAccepted",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "accept_id",
+                "type": "uint256"
+            }
+        ],
+        "name": "UnstakeFinished",
         "type": "event"
     },
     {
@@ -357,19 +395,6 @@
         "type": "function"
     },
     {
-        "inputs": [],
-        "name": "borrow_ratio",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
         "inputs": [
             {
                 "internalType": "bytes32",
@@ -393,6 +418,19 @@
             }
         ],
         "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "accept_id",
+                "type": "uint256"
+            }
+        ],
+        "name": "finished_unstake_accept",
+        "outputs": [],
+        "stateMutability": "nonpayable",
         "type": "function"
     },
     {
@@ -520,6 +558,11 @@
             {
                 "internalType": "uint256",
                 "name": "redeem_eth",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "redeem_usdc",
                 "type": "uint256"
             }
         ],
@@ -751,13 +794,49 @@
         "inputs": [
             {
                 "internalType": "uint256",
-                "name": "ratio",
+                "name": "",
                 "type": "uint256"
             }
         ],
-        "name": "update_borrow_ratio",
-        "outputs": [],
-        "stateMutability": "nonpayable",
+        "name": "unstake_accepted",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "receiver",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "unstake_amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "redeem_earning",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "redeem_eth",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "redeem_usdc",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "accept_timestamp",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint8",
+                "name": "status",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
         "type": "function"
     },
     {
