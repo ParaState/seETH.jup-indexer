@@ -23,13 +23,13 @@
   "author": "five",
   "license": "MIT",
   "dependencies": {
-    "@subql/types-ethereum": "latest",
+    "@subql/types-ethereum": "4.1.0",
     "assert": "^2.0.0"
   },
   "devDependencies": {
-    "@subql/cli": "latest",
+    "@subql/cli": "5.13.0",
     "@subql/testing": "latest",
-    "@subql/node-ethereum": "latest",
+    "@subql/node-ethereum": "5.6.2",
     "ethers": "^5.7.2",
     "typescript": "latest",
     "dotenv": "latest"
