@@ -10,20 +10,19 @@ export type UnstakeAcceptedProps = Omit<UnstakeAccepted, NonNullable<FunctionPro
  * Compat types allows for support of alternative `id` types without refactoring the node
  */
 type CompatUnstakeAcceptedProps = Omit<UnstakeAcceptedProps, 'id'> & { id: string; };
-type CompatEntity = Omit<Entity, 'id'> & { id: string; };
+type CompatEntity = Omit<Entity, 'id'> & { id: bigint; };
 
 export class UnstakeAccepted implements CompatEntity {
 
     constructor(
         
-        id: string,
+        id: bigint,
     ) {
         this.id = id;
         
     }
 
-    public id: string;
-    public acceptId?: bigint;
+    public id: bigint;
     public pool?: string;
     public blockHeight?: bigint;
     public staker?: string;
@@ -46,12 +45,12 @@ export class UnstakeAccepted implements CompatEntity {
         await store.set('UnstakeAccepted', id.toString(), this as unknown as CompatUnstakeAcceptedProps);
     }
 
-    static async remove(id: string): Promise<void> {
+    static async remove(id: bigint): Promise<void> {
         assert(id !== null, "Cannot remove UnstakeAccepted entity without an ID");
         await store.remove('UnstakeAccepted', id.toString());
     }
 
-    static async get(id: string): Promise<UnstakeAccepted | undefined> {
+    static async get(id: bigint): Promise<UnstakeAccepted | undefined> {
         assert((id !== null && id !== undefined), "Cannot get UnstakeAccepted entity without an ID");
         const record = await store.get('UnstakeAccepted', id.toString());
         if (record) {

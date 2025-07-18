@@ -1,6 +1,6 @@
 import { Staker, StakedRecord, UnstakeAccepted } from "../types";
 import {
-    StakedLog, UnstakeAcceptedLog
+    StakedLog, UnstakeAcceptedLog, UnstakeFinishedLog
 } from "../types/abi-interfaces/Sseth";
 import assert from "assert";
 
@@ -49,8 +49,7 @@ async function handleUnstakeAcceptedLog( unstake: UnstakeAcceptedLog): Promise<v
     assert(unstake.args, "No unstake.args");
 
     const record = UnstakeAccepted.create({
-        id: unstake.transactionHash,
-        acceptId: unstake.args.accept_id.toBigInt(),
+        id: unstake.args.accept_id.toBigInt(),
         pool: unstake.address,
         blockHeight: BigInt(unstake.blockNumber),
         staker: unstake.args.staker,
@@ -63,4 +62,16 @@ async function handleUnstakeAcceptedLog( unstake: UnstakeAcceptedLog): Promise<v
     });
 
     await record.save();
+}
+
+async function handleUnstakeFinishedLog( finished: UnstakeFinishedLog): Promise<void> {
+    logger.info(`New unstake finished transaction log at block ${finished.blockNumber}`);
+    assert(finished.args, "No finished.args");
+
+    const record = await UnstakeAccepted.get(finished.args.accept_id.toBigInt());
+
+    if (record && record.status === "pending") {
+        record.status = "finished";
+        await record.save();
+    }
 }
