@@ -34,7 +34,7 @@ type StakedRecord @entity {
 }
 
 type Staker @entity {
-  id: ID!, # kecash256( pool, staker)
+  id: ID! @dbType(type: "string"), # kecash256( pool, staker)
   pool: String, # stake pool address
   staker: String, # staker address
   stakeAmount: BigInt, # total staked amount

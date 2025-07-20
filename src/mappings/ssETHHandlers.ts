@@ -43,18 +43,19 @@ export async function handleUnstakeAcceptedLog(unstake: UnstakeAcceptedLog): Pro
   logger.info(`New unstake accepted transaction log at block ${unstake.blockNumber}`);
   assert(unstake.args, "No unstake.args");
 
-    const record = UnstakeAccepted.create({
-        id: unstake.args.accept_id.toBigInt(),
-        pool: unstake.address,
-        blockHeight: BigInt(unstake.blockNumber),
-        staker: unstake.args.staker,
-        unstakeToken: unstake.address,
-        unstakeAmount: unstake.args.unstake_amount.toBigInt(),
-        redeemEarning: unstake.args.redeem_earning.toBigInt(),
-        redeemEth: unstake.args.redeem_eth.toBigInt(),
-        status: "pending", // Initial status is pending
-        timestamp: new Date(Number(unstake.transaction.blockTimestamp)),
-    });
+  const record = UnstakeAccepted.create({
+    id: unstake.args.accept_id.toBigInt(),
+    pool: unstake.address,
+    blockHeight: BigInt(unstake.blockNumber),
+    staker: unstake.args.staker,
+    unstakeToken: unstake.address,
+    unstakeAmount: unstake.args.unstake_amount.toBigInt(),
+    redeemEarning: unstake.args.redeem_earning.toBigInt(),
+    redeemEth: unstake.args.redeem_eth.toBigInt(),
+    redeemUsdc: unstake.args.redeem_usdc.toBigInt(),
+    status: "pending", // Initial status is pending
+    timestamp: new Date(Number(unstake.transaction.blockTimestamp)),
+  });
 
   await record.save();
 }
@@ -65,8 +66,8 @@ export async function handleUnstakeFinishedLog(finished: UnstakeFinishedLog): Pr
 
   const record = await UnstakeAccepted.get(finished.args.accept_id.toBigInt());
 
-    if (record && record.status === "pending") {
-        record.status = "finished";
-        await record.save();
-    }
+  if (record && record.status === "pending") {
+    record.status = "success";
+    await record.save();
+  }
 }
