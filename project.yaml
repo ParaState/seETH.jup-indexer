@@ -22,14 +22,15 @@ network:
     - https://0xrpc.io/base
     - https://base-mainnet.public.blastapi.io
     - https://base.public.blockpi.network/v1/rpc/public
-    - https://base.lava.build
     - https://api.zan.top/base-mainnet
+    - >-
+      https://base.api.onfinality.io/rpc?apikey=e76945fc-1f57-42a9-8bf4-d1b13e314835
 dataSources:
   - kind: ethereum/Runtime
     startBlock: 32978180
     options:
       abi: erc20
-      address: '0xE58fEe1e52E427E2702Cc9A7dED790B5eD55c7b4'
+      address: '0xfEbC89cB3Ce5676220246904a12308d1BA10313E'
     assets:
       erc20:
         file: ./abis/erc20.json
@@ -51,7 +52,7 @@ dataSources:
     startBlock: 32978180
     options:
       abi: sseth
-      address: '0xE58fEe1e52E427E2702Cc9A7dED790B5eD55c7b4'
+      address: '0xfEbC89cB3Ce5676220246904a12308d1BA10313E'
     assets:
       sseth:
         file: ./abis/sseth.json

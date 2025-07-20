@@ -9,7 +9,9 @@ const mode = process.env.NODE_ENV || "production";
 const dotenvPath = path.resolve(__dirname, `.env${mode !== "production" ? `.${mode}` : ""}`);
 dotenv.config({ path: dotenvPath });
 
-const { SSETH_ADDRESS } = process.env;
+const { SSETH_ADDRESS, START_BLOCK } = process.env;
+
+const startBlock = START_BLOCK ? parseInt(START_BLOCK) : 32978180;
 
 // Can expand the Datasource processor types via the generic param
 const project: EthereumProject = {
@@ -49,7 +51,7 @@ const project: EthereumProject = {
   dataSources: [
     {
       kind: EthereumDatasourceKind.Runtime,
-      startBlock: 32978180,
+      startBlock: startBlock,
 
       options: {
         // Must be a key of assets
@@ -89,7 +91,7 @@ const project: EthereumProject = {
     },
     {
       kind: EthereumDatasourceKind.Runtime,
-      startBlock: 32978180,
+      startBlock: startBlock,
       options: {
         abi: "sseth",
         address: SSETH_ADDRESS,
