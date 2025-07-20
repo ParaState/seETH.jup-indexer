@@ -42,8 +42,8 @@ type Staker @entity {
 }
 
 type UnstakeAccepted @entity {
-  id: ID! # Transaction hash
-  acceptId: BigInt # accept id
+  id: ID!
+  txHash: String
   pool: String
   blockHeight: BigInt
   staker: String
