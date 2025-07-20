@@ -14,7 +14,7 @@ export async function handleStakedLog(staked: StakedLog): Promise<void> {
     stakeAmount: staked.args.amount.toBigInt(),
     mintReceiver: staked.args.receiver,
     mintAmount: staked.args.minted.toBigInt(),
-    timestamp: new Date(Number(staked.transaction.blockTimestamp)),
+    timestamp: new Date(Number(staked.transaction.blockTimestamp) * 1000),
   });
 
   await record.save();
@@ -70,7 +70,7 @@ export async function handleUnstakeAcceptedLog(unstake: UnstakeAcceptedLog): Pro
     redeemEth: unstake.args.redeem_eth.toBigInt(),
     redeemUsdc: unstake.args.redeem_usdc.toBigInt(),
     status: "pending", // Initial status is pending
-    timestamp: new Date(Number(unstake.transaction.blockTimestamp)),
+    timestamp: new Date(Number(unstake.transaction.blockTimestamp) * 1000),
   });
 
   await record.save();
