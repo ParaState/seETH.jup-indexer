@@ -22,35 +22,35 @@ type Approval @entity {
 
 type StakedRecord @entity {
   id: ID! # Transaction hash
-  pool: String,
+  pool: String
   blockHeight: BigInt
-  staker: String,
-  stakeToken: String,
-  stakeAmount: BigInt,
-  mintReceiver: String,
-  mintToken: String,
-  mintAmount: BigInt,
+  staker: String
+  stakeToken: String
+  stakeAmount: BigInt
+  mintReceiver: String
+  mintToken: String
+  mintAmount: BigInt
   timestamp: Date
 }
 
 type Staker @entity {
-  id: ID! @dbType(type: "string"), # kecash256( pool, staker)
-  pool: String, # stake pool address
-  staker: String, # staker address
-  stakeAmount: BigInt, # total staked amount
-  mintAmount: BigInt, # total minted amount
+  id: ID! @dbType(type: "String") # kecash256( pool, staker)
+  pool: String # stake pool address
+  staker: String # staker address
+  stakeAmount: BigInt # total staked amount
+  mintAmount: BigInt # total minted amount
 }
 
 type UnstakeAccepted @entity {
-  id: ID! @dbType(type: "BigInt")   # accept id
-  pool: String,
+  id: ID! # accept id
+  pool: String
   blockHeight: BigInt
-  staker: String,
-  unstakeToken: String,
-  unstakeAmount: BigInt,
-  redeemEarning: BigInt,
-  redeemEth: BigInt,
-  redeemUsdc: BigInt,
-  status: String, # "pending", "success", "failed"
+  staker: String
+  unstakeToken: String
+  unstakeAmount: BigInt
+  redeemEarning: BigInt
+  redeemEth: BigInt
+  redeemUsdc: BigInt
+  status: String # "pending", "success", "failed"
   timestamp: Date
 }

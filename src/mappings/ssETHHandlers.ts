@@ -43,8 +43,24 @@ export async function handleUnstakeAcceptedLog(unstake: UnstakeAcceptedLog): Pro
   logger.info(`New unstake accepted transaction log at block ${unstake.blockNumber}`);
   assert(unstake.args, "No unstake.args");
 
+  logger.info(`unstake========================================`);
+  logger.info(`unstake.address: ${unstake.address}`);
+  logger.info(`unstake.blockNumber: ${unstake.blockNumber}`);
+  logger.info(`unstake.transactionHash: ${unstake.transactionHash}`);
+  logger.info(`unstake.transaction.blockTimestamp: ${unstake.transaction.blockTimestamp}`);
+  logger.info(`unstake.args.accept_id: ${unstake.args.accept_id}`);
+  logger.info(`unstake.args.staker: ${unstake.args.staker}`);
+  logger.info(`unstake.args.receiver: ${unstake.args.receiver}`);
+  logger.info(`unstake.args.unstake_amount: ${unstake.args.unstake_amount}`);
+  logger.info(`unstake.args.redeem_earning: ${unstake.args.redeem_earning}`);
+  logger.info(`unstake.args.redeem_eth: ${unstake.args.redeem_eth}`);
+  logger.info(`unstake.args.redeem_usdc: ${unstake.args.redeem_usdc}`);
+  logger.info(`unstake.args: ${JSON.stringify(unstake.args)}`);
+  logger.info(`unstake.args.accept_id: ${unstake.args.accept_id}`);
+  logger.info(`unstake========================================`);
+
   const record = UnstakeAccepted.create({
-    id: unstake.args.accept_id.toBigInt(),
+    id: unstake.args.accept_id.toString(),
     pool: unstake.address,
     blockHeight: BigInt(unstake.blockNumber),
     staker: unstake.args.staker,
@@ -64,7 +80,7 @@ export async function handleUnstakeFinishedLog(finished: UnstakeFinishedLog): Pr
   logger.info(`New unstake finished transaction log at block ${finished.blockNumber}`);
   assert(finished.args, "No finished.args");
 
-  const record = await UnstakeAccepted.get(finished.args.accept_id.toBigInt());
+  const record = await UnstakeAccepted.get(finished.args.accept_id.toString());
 
   if (record && record.status === "pending") {
     record.status = "success";
