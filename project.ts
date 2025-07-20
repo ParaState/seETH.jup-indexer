@@ -114,6 +114,15 @@ const project: EthereumProject = {
               ],
             },
           },
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handleUnstakeFinishedLog",
+            filter: {
+              topics: [
+                "UnstakeFinished(uint256 accept_id)",
+              ],
+            },
+          },
         ],
       },
     },

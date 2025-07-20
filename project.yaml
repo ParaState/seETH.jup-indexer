@@ -22,7 +22,6 @@ network:
     - https://0xrpc.io/base
     - https://base-mainnet.public.blastapi.io
     - https://base.public.blockpi.network/v1/rpc/public
-    - https://base.lava.build
     - https://api.zan.top/base-mainnet
 dataSources:
   - kind: ethereum/Runtime
@@ -73,4 +72,9 @@ dataSources:
                 UnstakeAccepted(uint256 accept_id, address indexed staker,
                 address receiver, uint256 unstake_amount, uint256
                 redeem_earning, uint256 redeem_eth, uint256 redeem_usdc)
+        - kind: ethereum/LogHandler
+          handler: handleUnstakeFinishedLog
+          filter:
+            topics:
+              - UnstakeFinished(uint256 accept_id)
 repository: https://github.com/subquery/ethereum-subql-starter

@@ -48,6 +48,15 @@ async function handleUnstakeAcceptedLog( unstake: UnstakeAcceptedLog): Promise<v
     logger.info(`New unstake accepted transaction log at block ${unstake.blockNumber}`);
     assert(unstake.args, "No unstake.args");
 
+    const staker_id = `${unstake.address}-${unstake.args.staker}`;
+    const staker = await Staker.get(staker_id);
+
+    assert(staker, "No staker found");
+
+    staker.stakeAmount = staker.stakeAmount! - unstake.args.unstake_amount.toBigInt();
+    staker.mintAmount = staker.mintAmount! - unstake.args.redeem_eth.toBigInt();
+
+    await staker.save();
     const record = UnstakeAccepted.create({
         id: unstake.args.accept_id.toBigInt(),
         pool: unstake.address,
@@ -71,7 +80,7 @@ async function handleUnstakeFinishedLog( finished: UnstakeFinishedLog): Promise<
     const record = await UnstakeAccepted.get(finished.args.accept_id.toBigInt());
 
     if (record && record.status === "pending") {
-        record.status = "finished";
+        record.status = "success";
         await record.save();
     }
 }
