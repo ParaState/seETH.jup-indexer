@@ -18,6 +18,12 @@ network:
   chainId: '8453'
   endpoint:
     - https://mainnet.base.org
+    - https://base.llamarpc.com
+    - https://0xrpc.io/base
+    - https://base-mainnet.public.blastapi.io
+    - https://base.public.blockpi.network/v1/rpc/public
+    - https://base.lava.build
+    - https://api.zan.top/base-mainnet
 dataSources:
   - kind: ethereum/Runtime
     startBlock: 32978180

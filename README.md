@@ -6,7 +6,7 @@
 
 ## Start
 
-First, install SubQuery CLI globally on your terminal by using NPM `npm install -g @subql/cli`
+First, install SubQuery CLI globally on your terminal by using NPM `npm install -g @subql/cli@5.13.0`
 
 You can either clone this GitHub repo, or use the `subql` CLI to bootstrap a clean project in the network of your choosing by running `subql init` and following the prompts.
 
@@ -88,3 +88,28 @@ Take a look at some of our advanced features to take your project to the next le
 ## Need Help?
 
 The fastest way to get support is by [searching our documentation](https://academy.subquery.network), or by [joining our discord](https://discord.com/invite/subquery) and messaging us in the `#technical-support` channel.
+
+
+```
+
+{
+  query {
+    stakedRecords(first: 3, orderBy: BLOCK_HEIGHT_DESC) {
+      totalCount
+      nodes {
+        id
+        pool,
+        blockHeight,
+        staker,
+        stakeToken,
+        stakeAmount,
+        mintReceiver,
+        mintToken,
+        mintAmount,
+        timestamp
+      }
+    }
+  },
+ 
+}
+```
