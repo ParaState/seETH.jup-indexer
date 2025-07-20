@@ -23,6 +23,7 @@ export class UnstakeAccepted implements CompatEntity {
     }
 
     public id: string;
+    public acceptId?: bigint;
     public pool?: string;
     public blockHeight?: bigint;
     public staker?: string;

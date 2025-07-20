@@ -60,7 +60,8 @@ export async function handleUnstakeAcceptedLog(unstake: UnstakeAcceptedLog): Pro
   logger.info(`unstake========================================`);
 
   const record = UnstakeAccepted.create({
-    id: unstake.args.accept_id.toString(),
+    id: unstake.transactionHash,
+    acceptId: unstake.args.accept_id.toBigInt(),
     pool: unstake.address,
     blockHeight: BigInt(unstake.blockNumber),
     staker: unstake.args.staker,
