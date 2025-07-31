@@ -30,7 +30,7 @@ dataSources:
     startBlock: 32978180
     options:
       abi: erc20
-      address: '0xfEbC89cB3Ce5676220246904a12308d1BA10313E'
+      address: '0x5f5d792A9d359d4FAd2aA32B40caa88220935F70'
     assets:
       erc20:
         file: ./abis/erc20.json
@@ -52,7 +52,7 @@ dataSources:
     startBlock: 32978180
     options:
       abi: sseth
-      address: '0xfEbC89cB3Ce5676220246904a12308d1BA10313E'
+      address: '0x5f5d792A9d359d4FAd2aA32B40caa88220935F70'
     assets:
       sseth:
         file: ./abis/sseth.json
