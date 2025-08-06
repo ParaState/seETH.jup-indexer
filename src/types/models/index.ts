@@ -18,5 +18,5 @@ export {RemoteBalanceUpdated} from "./RemoteBalanceUpdated"
 
 export {RiskBalanceUpdated} from "./RiskBalanceUpdated"
 
-export {USDVaultWithdraw} from "./USDVaultWithdraw"
+export {UsdVaultWithdraw} from "./UsdVaultWithdraw"
 

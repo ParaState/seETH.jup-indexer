@@ -81,7 +81,7 @@ type RiskBalanceUpdated @entity {
   timestamp: Date
 }
 
-type USDVaultWithdraw @entity {
+type UsdVaultWithdraw @entity {
   id: ID! # Transaction hash
   blockHeight: BigInt
   contractAddress: String!
