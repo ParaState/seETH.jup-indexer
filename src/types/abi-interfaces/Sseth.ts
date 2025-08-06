@@ -3,7 +3,7 @@
 // Auto-generated , DO NOT EDIT
 import {EthereumLog, EthereumTransaction, LightEthereumLog} from "@subql/types-ethereum";
 
-import {ApprovalEvent, BorrowedEvent, InitializedEvent, StakedEvent, TransferEvent, UnstakeAcceptedEvent, UnstakeFinishedEvent, Sseth} from '../contracts/Sseth'
+import {ApprovalEvent, BorrowedEvent, InitializedEvent, StakedEvent, TransferEvent, ReferralBoundEvent, UnstakeAcceptedEvent, UnstakeFinishedEvent, Sseth} from '../contracts/Sseth'
 
 
 export type ApprovalLog = EthereumLog<ApprovalEvent["args"]>
@@ -15,6 +15,8 @@ export type InitializedLog = EthereumLog<InitializedEvent["args"]>
 export type StakedLog = EthereumLog<StakedEvent["args"]>
 
 export type TransferLog = EthereumLog<TransferEvent["args"]>
+
+export type ReferralBoundLog = EthereumLog<ReferralBoundEvent["args"]>
 
 export type UnstakeAcceptedLog = EthereumLog<UnstakeAcceptedEvent["args"]>
 
@@ -30,6 +32,8 @@ export type LightInitializedLog = LightEthereumLog<InitializedEvent["args"]>
 export type LightStakedLog = LightEthereumLog<StakedEvent["args"]>
 
 export type LightTransferLog = LightEthereumLog<TransferEvent["args"]>
+
+export type LightReferralBoundLog = LightEthereumLog<ReferralBoundEvent["args"]>
 
 export type LightUnstakeAcceptedLog = LightEthereumLog<UnstakeAcceptedEvent["args"]>
 

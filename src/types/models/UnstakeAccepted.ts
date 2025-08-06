@@ -30,8 +30,8 @@ export class UnstakeAccepted implements CompatEntity {
     public unstakeToken?: string;
     public unstakeAmount?: bigint;
     public redeemEarning?: bigint;
-    public redeemEth?: bigint;
-    public redeemUsdc?: bigint;
+    public withdrawEth?: bigint;
+    public repayUsdc?: bigint;
     public status?: string;
     public timestamp?: Date;
     

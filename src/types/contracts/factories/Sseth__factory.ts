@@ -220,6 +220,25 @@ const _abi = [
     anonymous: false,
     inputs: [
       {
+        indexed: true,
+        internalType: "address",
+        name: "user",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "referrer",
+        type: "address",
+      },
+    ],
+    name: "ReferralBound",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
         indexed: false,
         internalType: "uint256",
         name: "accept_id",
@@ -252,13 +271,13 @@ const _abi = [
       {
         indexed: false,
         internalType: "uint256",
-        name: "redeem_eth",
+        name: "withdraw_eth",
         type: "uint256",
       },
       {
         indexed: false,
         internalType: "uint256",
-        name: "redeem_usdc",
+        name: "repay_usdc",
         type: "uint256",
       },
     ],

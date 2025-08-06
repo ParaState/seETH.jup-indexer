@@ -1,5 +1,5 @@
-import { Staker, StakedRecord, UnstakeAccepted } from "../types";
-import { StakedLog, UnstakeAcceptedLog, UnstakeFinishedLog } from "../types/abi-interfaces/Sseth";
+import { Staker, StakedRecord, UnstakeAccepted, ReferralBound } from "../types";
+import { StakedLog, UnstakeAcceptedLog, UnstakeFinishedLog, ReferralBoundLog } from "../types/abi-interfaces/Sseth";
 import assert from "assert";
 
 export async function handleStakedLog(staked: StakedLog): Promise<void> {
@@ -53,8 +53,8 @@ export async function handleUnstakeAcceptedLog(unstake: UnstakeAcceptedLog): Pro
   logger.info(`unstake.args.receiver: ${unstake.args.receiver}`);
   logger.info(`unstake.args.unstake_amount: ${unstake.args.unstake_amount}`);
   logger.info(`unstake.args.redeem_earning: ${unstake.args.redeem_earning}`);
-  logger.info(`unstake.args.redeem_eth: ${unstake.args.redeem_eth}`);
-  logger.info(`unstake.args.redeem_usdc: ${unstake.args.redeem_usdc}`);
+  logger.info(`unstake.args.withdraw_eth: ${unstake.args.withdraw_eth}`);
+  logger.info(`unstake.args.repay_usdc: ${unstake.args.repay_usdc}`);
   logger.info(`unstake.args: ${JSON.stringify(unstake.args)}`);
   logger.info(`unstake.args.accept_id: ${unstake.args.accept_id}`);
   logger.info(`unstake========================================`);
@@ -68,8 +68,8 @@ export async function handleUnstakeAcceptedLog(unstake: UnstakeAcceptedLog): Pro
     unstakeToken: unstake.address,
     unstakeAmount: unstake.args.unstake_amount.toBigInt(),
     redeemEarning: unstake.args.redeem_earning.toBigInt(),
-    redeemEth: unstake.args.redeem_eth.toBigInt(),
-    redeemUsdc: unstake.args.redeem_usdc.toBigInt(),
+    withdrawEth: unstake.args.withdraw_eth.toBigInt(),
+    repayUsdc: unstake.args.repay_usdc.toBigInt(),
     status: "pending", // Initial status is pending
     timestamp: new Date(Number(unstake.transaction.blockTimestamp) * 1000),
   });
@@ -87,4 +87,28 @@ export async function handleUnstakeFinishedLog(finished: UnstakeFinishedLog): Pr
     record.status = "success";
     await record.save();
   }
+}
+
+export async function handleReferralBoundLog(referralBound: ReferralBoundLog): Promise<void> {
+  logger.info(`New referral bound transaction log at block ${referralBound.blockNumber}`);
+  assert(referralBound.args, "No referralBound.args");
+
+  logger.info(`referralBound========================================`);
+  logger.info(`referralBound.address: ${referralBound.address}`);
+  logger.info(`referralBound.blockNumber: ${referralBound.blockNumber}`);
+  logger.info(`referralBound.transactionHash: ${referralBound.transactionHash}`);
+  logger.info(`referralBound.transaction.blockTimestamp: ${referralBound.transaction.blockTimestamp}`);
+  logger.info(`referralBound.args.user: ${referralBound.args.user}`);
+  logger.info(`referralBound.args.referrer: ${referralBound.args.referrer}`);
+  logger.info(`referralBound========================================`);
+
+  const record = ReferralBound.create({
+    id: referralBound.transactionHash,
+    blockHeight: BigInt(referralBound.blockNumber),
+    user: referralBound.args.user,
+    referrer: referralBound.args.referrer,
+    timestamp: new Date(Number(referralBound.transaction.blockTimestamp) * 1000),
+  });
+
+  await record.save();
 }

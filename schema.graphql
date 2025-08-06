@@ -50,8 +50,16 @@ type UnstakeAccepted @entity {
   unstakeToken: String
   unstakeAmount: BigInt
   redeemEarning: BigInt
-  redeemEth: BigInt
-  redeemUsdc: BigInt
+  withdrawEth: BigInt
+  repayUsdc: BigInt
   status: String # "pending", "success", "failed"
+  timestamp: Date
+}
+
+type ReferralBound @entity {
+  id: ID! # Transaction hash
+  blockHeight: BigInt
+  user: String! @index
+  referrer: String! @index
   timestamp: Date
 }

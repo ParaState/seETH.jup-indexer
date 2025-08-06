@@ -12,3 +12,5 @@ export {Staker} from "./Staker"
 
 export {UnstakeAccepted} from "./UnstakeAccepted"
 
+export {ReferralBound} from "./ReferralBound"
+

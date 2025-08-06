@@ -27,10 +27,10 @@ network:
       https://base.api.onfinality.io/rpc?apikey=e76945fc-1f57-42a9-8bf4-d1b13e314835
 dataSources:
   - kind: ethereum/Runtime
-    startBlock: 32978180
+    startBlock: 33837270
     options:
       abi: erc20
-      address: '0x5f5d792A9d359d4FAd2aA32B40caa88220935F70'
+      address: '0x855316E073036983658672F0d894beA0BF2881a7'
     assets:
       erc20:
         file: ./abis/erc20.json
@@ -49,10 +49,10 @@ dataSources:
                 Transfer(address indexed from, address indexed to, uint256
                 amount)
   - kind: ethereum/Runtime
-    startBlock: 32978180
+    startBlock: 33837270
     options:
       abi: sseth
-      address: '0x5f5d792A9d359d4FAd2aA32B40caa88220935F70'
+      address: '0x855316E073036983658672F0d894beA0BF2881a7'
     assets:
       sseth:
         file: ./abis/sseth.json

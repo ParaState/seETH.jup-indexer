@@ -276,6 +276,7 @@ export interface SsethInterface extends utils.Interface {
     "Initialized(uint64)": EventFragment;
     "Staked(address,address,uint256,uint256)": EventFragment;
     "Transfer(address,address,uint256)": EventFragment;
+    "ReferralBound(address,address)": EventFragment;
     "UnstakeAccepted(uint256,address,address,uint256,uint256,uint256,uint256)": EventFragment;
     "UnstakeFinished(uint256)": EventFragment;
   };
@@ -285,6 +286,7 @@ export interface SsethInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Staked"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ReferralBound"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "UnstakeAccepted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "UnstakeFinished"): EventFragment;
 }
@@ -344,14 +346,25 @@ export type TransferEvent = TypedEvent<
 
 export type TransferEventFilter = TypedEventFilter<TransferEvent>;
 
+export interface ReferralBoundEventObject {
+  user: string;
+  referrer: string;
+}
+export type ReferralBoundEvent = TypedEvent<
+  [string, string],
+  ReferralBoundEventObject
+>;
+
+export type ReferralBoundEventFilter = TypedEventFilter<ReferralBoundEvent>;
+
 export interface UnstakeAcceptedEventObject {
   accept_id: BigNumber;
   staker: string;
   receiver: string;
   unstake_amount: BigNumber;
   redeem_earning: BigNumber;
-  redeem_eth: BigNumber;
-  redeem_usdc: BigNumber;
+  withdraw_eth: BigNumber;
+  repay_usdc: BigNumber;
 }
 export type UnstakeAcceptedEvent = TypedEvent<
   [BigNumber, string, string, BigNumber, BigNumber, BigNumber, BigNumber],
@@ -907,14 +920,23 @@ export interface Sseth extends BaseContract {
       value?: null
     ): TransferEventFilter;
 
+    "ReferralBound(address,address)"(
+      user?: string | null,
+      referrer?: null
+    ): ReferralBoundEventFilter;
+    ReferralBound(
+      user?: string | null,
+      referrer?: null
+    ): ReferralBoundEventFilter;
+
     "UnstakeAccepted(uint256,address,address,uint256,uint256,uint256,uint256)"(
       accept_id?: null,
       staker?: string | null,
       receiver?: null,
       unstake_amount?: null,
       redeem_earning?: null,
-      redeem_eth?: null,
-      redeem_usdc?: null
+      withdraw_eth?: null,
+      repay_usdc?: null
     ): UnstakeAcceptedEventFilter;
     UnstakeAccepted(
       accept_id?: null,
@@ -922,8 +944,8 @@ export interface Sseth extends BaseContract {
       receiver?: null,
       unstake_amount?: null,
       redeem_earning?: null,
-      redeem_eth?: null,
-      redeem_usdc?: null
+      withdraw_eth?: null,
+      repay_usdc?: null
     ): UnstakeAcceptedEventFilter;
 
     "UnstakeFinished(uint256)"(accept_id?: null): UnstakeFinishedEventFilter;
