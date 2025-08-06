@@ -9,9 +9,9 @@ const mode = process.env.NODE_ENV || "production";
 const dotenvPath = path.resolve(__dirname, `.env${mode !== "production" ? `.${mode}` : ""}`);
 dotenv.config({ path: dotenvPath });
 
-const { SSETH_ADDRESS, START_BLOCK } = process.env;
+const { SSETH_ADDRESS, USD_VAULT_ADDRESS, START_BLOCK } = process.env;
 
-const startBlock = START_BLOCK ? parseInt(START_BLOCK) : 32978180;
+const startBlock = START_BLOCK ? parseInt(START_BLOCK) : 33837270;
 
 // Can expand the Datasource processor types via the generic param
 const project: EthereumProject = {
@@ -112,7 +112,7 @@ const project: EthereumProject = {
             handler: "handleUnstakeAcceptedLog",
             filter: {
               topics: [
-                "UnstakeAccepted(uint256 accept_id, address indexed staker, address receiver, uint256 unstake_amount, uint256 redeem_earning, uint256 redeem_eth, uint256 redeem_usdc)",
+                "UnstakeAccepted(uint256 accept_id, address indexed staker, address receiver, uint256 unstake_amount, uint256 redeem_earning, uint256 withdraw_eth, uint256 repay_usdc)",
               ],
             },
           },
@@ -120,9 +120,49 @@ const project: EthereumProject = {
             kind: EthereumHandlerKind.Event,
             handler: "handleUnstakeFinishedLog",
             filter: {
-              topics: [
-                "UnstakeFinished(uint256 accept_id)",
-              ],
+              topics: ["UnstakeFinished(uint256 accept_id)"],
+            },
+          },
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handleReferralBoundLog",
+            filter: {
+              topics: ["ReferralBound(address indexed user, address referrer)"],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: EthereumDatasourceKind.Runtime,
+      startBlock: startBlock,
+      options: {
+        abi: "usdvault",
+        address: USD_VAULT_ADDRESS,
+      },
+      assets: new Map([["usdvault", { file: "./abis/usdvault.json" }]]),
+      mapping: {
+        file: "./dist/index.js",
+        handlers: [
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handleRemoteBalanceUpdatedLog",
+            filter: {
+              topics: ["RemoteBalanceUpdated(uint8 op, uint256 amount)"],
+            },
+          },
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handleRiskBalanceUpdatedLog",
+            filter: {
+              topics: ["RiskBalanceUpdated(uint256 newBalance)"],
+            },
+          },
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handleUSDVaultWithdrawLog",
+            filter: {
+              topics: ["Withdraw(address indexed to, uint256 amount)"],
             },
           },
         ],

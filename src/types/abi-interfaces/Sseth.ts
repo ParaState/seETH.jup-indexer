@@ -3,7 +3,7 @@
 // Auto-generated , DO NOT EDIT
 import {EthereumLog, EthereumTransaction, LightEthereumLog} from "@subql/types-ethereum";
 
-import {ApprovalEvent, BorrowedEvent, InitializedEvent, StakedEvent, TransferEvent, ReferralBoundEvent, UnstakeAcceptedEvent, UnstakeFinishedEvent, Sseth} from '../contracts/Sseth'
+import {ApprovalEvent, BorrowedEvent, InitializedEvent, ReferralBoundEvent, StakedEvent, TransferEvent, UnstakeAcceptedEvent, UnstakeFinishedEvent, Sseth} from '../contracts/Sseth'
 
 
 export type ApprovalLog = EthereumLog<ApprovalEvent["args"]>
@@ -12,11 +12,11 @@ export type BorrowedLog = EthereumLog<BorrowedEvent["args"]>
 
 export type InitializedLog = EthereumLog<InitializedEvent["args"]>
 
+export type ReferralBoundLog = EthereumLog<ReferralBoundEvent["args"]>
+
 export type StakedLog = EthereumLog<StakedEvent["args"]>
 
 export type TransferLog = EthereumLog<TransferEvent["args"]>
-
-export type ReferralBoundLog = EthereumLog<ReferralBoundEvent["args"]>
 
 export type UnstakeAcceptedLog = EthereumLog<UnstakeAcceptedEvent["args"]>
 
@@ -29,11 +29,11 @@ export type LightBorrowedLog = LightEthereumLog<BorrowedEvent["args"]>
 
 export type LightInitializedLog = LightEthereumLog<InitializedEvent["args"]>
 
+export type LightReferralBoundLog = LightEthereumLog<ReferralBoundEvent["args"]>
+
 export type LightStakedLog = LightEthereumLog<StakedEvent["args"]>
 
 export type LightTransferLog = LightEthereumLog<TransferEvent["args"]>
-
-export type LightReferralBoundLog = LightEthereumLog<ReferralBoundEvent["args"]>
 
 export type LightUnstakeAcceptedLog = LightEthereumLog<UnstakeAcceptedEvent["args"]>
 
@@ -58,6 +58,12 @@ export type CheckRoleTransaction = EthereumTransaction<Parameters<Sseth['functio
 
 export type DecimalsTransaction = EthereumTransaction<Parameters<Sseth['functions']['decimals']>>
 
+export type EarningTransaction = EthereumTransaction<Parameters<Sseth['functions']['earning']>>
+
+export type FeeConfigTransaction = EthereumTransaction<Parameters<Sseth['functions']['feeConfig']>>
+
+export type Fee_accountTransaction = EthereumTransaction<Parameters<Sseth['functions']['fee_account']>>
+
 export type Finished_unstake_acceptTransaction = EthereumTransaction<Parameters<Sseth['functions']['finished_unstake_accept']>>
 
 export type GrantRoleTransaction = EthereumTransaction<Parameters<Sseth['functions']['grantRole']>>
@@ -72,7 +78,13 @@ export type Pre_mint_amountTransaction = EthereumTransaction<Parameters<Sseth['f
 
 export type Pre_redeem_amountTransaction = EthereumTransaction<Parameters<Sseth['functions']['pre_redeem_amount']>>
 
+export type ReferralsTransaction = EthereumTransaction<Parameters<Sseth['functions']['referrals']>>
+
 export type RevokeRoleTransaction = EthereumTransaction<Parameters<Sseth['functions']['revokeRole']>>
+
+export type Set_fee_accountTransaction = EthereumTransaction<Parameters<Sseth['functions']['set_fee_account']>>
+
+export type Set_fee_valueTransaction = EthereumTransaction<Parameters<Sseth['functions']['set_fee_value']>>
 
 export type Set_usd_vaultTransaction = EthereumTransaction<Parameters<Sseth['functions']['set_usd_vault']>>
 

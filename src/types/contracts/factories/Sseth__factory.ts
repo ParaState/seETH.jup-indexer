@@ -166,6 +166,25 @@ const _abi = [
       {
         indexed: true,
         internalType: "address",
+        name: "user",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "referrer",
+        type: "address",
+      },
+    ],
+    name: "ReferralBound",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
         name: "staker",
         type: "address",
       },
@@ -214,25 +233,6 @@ const _abi = [
       },
     ],
     name: "Transfer",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "user",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "address",
-        name: "referrer",
-        type: "address",
-      },
-    ],
-    name: "ReferralBound",
     type: "event",
   },
   {
@@ -448,6 +448,60 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "earning",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "feeConfig",
+    outputs: [
+      {
+        internalType: "uint64",
+        name: "earning_base_fee",
+        type: "uint64",
+      },
+      {
+        internalType: "uint64",
+        name: "redeem_base_fee",
+        type: "uint64",
+      },
+      {
+        internalType: "uint64",
+        name: "referral_fee",
+        type: "uint64",
+      },
+      {
+        internalType: "uint64",
+        name: "risk_amount_checker",
+        type: "uint64",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "fee_account",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "uint256",
@@ -584,13 +638,32 @@ const _abi = [
       },
       {
         internalType: "uint256",
-        name: "redeem_eth",
+        name: "withdraw_eth",
         type: "uint256",
       },
       {
         internalType: "uint256",
-        name: "redeem_usdc",
+        name: "repay_usdc",
         type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    name: "referrals",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
       },
     ],
     stateMutability: "view",
@@ -610,6 +683,47 @@ const _abi = [
       },
     ],
     name: "revokeRole",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_fee_account",
+        type: "address",
+      },
+    ],
+    name: "set_fee_account",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint64",
+        name: "_earning_fee",
+        type: "uint64",
+      },
+      {
+        internalType: "uint64",
+        name: "_redeem_base_fee",
+        type: "uint64",
+      },
+      {
+        internalType: "uint64",
+        name: "_referral_fee",
+        type: "uint64",
+      },
+      {
+        internalType: "uint64",
+        name: "_risk_amount_checker",
+        type: "uint64",
+      },
+    ],
+    name: "set_fee_value",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -639,6 +753,11 @@ const _abi = [
         name: "amount",
         type: "uint256",
       },
+      {
+        internalType: "address",
+        name: "ref",
+        type: "address",
+      },
     ],
     name: "stake",
     outputs: [
@@ -656,6 +775,11 @@ const _abi = [
       {
         internalType: "address",
         name: "receiver",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "ref",
         type: "address",
       },
     ],
@@ -844,12 +968,12 @@ const _abi = [
       },
       {
         internalType: "uint256",
-        name: "redeem_eth",
+        name: "withdraw_eth",
         type: "uint256",
       },
       {
         internalType: "uint256",
-        name: "redeem_usdc",
+        name: "repay_usdc",
         type: "uint256",
       },
       {

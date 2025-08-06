@@ -38,6 +38,9 @@ export interface SsethInterface extends utils.Interface {
     "balanceOf(address)": FunctionFragment;
     "checkRole(bytes32)": FunctionFragment;
     "decimals()": FunctionFragment;
+    "earning()": FunctionFragment;
+    "feeConfig()": FunctionFragment;
+    "fee_account()": FunctionFragment;
     "finished_unstake_accept(uint256)": FunctionFragment;
     "grantRole(bytes32,address)": FunctionFragment;
     "hasRole(bytes32,address)": FunctionFragment;
@@ -45,10 +48,13 @@ export interface SsethInterface extends utils.Interface {
     "name()": FunctionFragment;
     "pre_mint_amount(uint256)": FunctionFragment;
     "pre_redeem_amount(uint256)": FunctionFragment;
+    "referrals(address)": FunctionFragment;
     "revokeRole(bytes32,address)": FunctionFragment;
+    "set_fee_account(address)": FunctionFragment;
+    "set_fee_value(uint64,uint64,uint64,uint64)": FunctionFragment;
     "set_usd_vault(address)": FunctionFragment;
-    "stake(address,uint256)": FunctionFragment;
-    "stake_eth(address)": FunctionFragment;
+    "stake(address,uint256,address)": FunctionFragment;
+    "stake_eth(address,address)": FunctionFragment;
     "symbol()": FunctionFragment;
     "token_to_vault()": FunctionFragment;
     "totalSupply()": FunctionFragment;
@@ -74,6 +80,9 @@ export interface SsethInterface extends utils.Interface {
       | "balanceOf"
       | "checkRole"
       | "decimals"
+      | "earning"
+      | "feeConfig"
+      | "fee_account"
       | "finished_unstake_accept"
       | "grantRole"
       | "hasRole"
@@ -81,7 +90,10 @@ export interface SsethInterface extends utils.Interface {
       | "name"
       | "pre_mint_amount"
       | "pre_redeem_amount"
+      | "referrals"
       | "revokeRole"
+      | "set_fee_account"
+      | "set_fee_value"
       | "set_usd_vault"
       | "stake"
       | "stake_eth"
@@ -126,6 +138,12 @@ export interface SsethInterface extends utils.Interface {
     values: [BytesLike]
   ): string;
   encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
+  encodeFunctionData(functionFragment: "earning", values?: undefined): string;
+  encodeFunctionData(functionFragment: "feeConfig", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "fee_account",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "finished_unstake_accept",
     values: [BigNumberish]
@@ -151,9 +169,18 @@ export interface SsethInterface extends utils.Interface {
     functionFragment: "pre_redeem_amount",
     values: [BigNumberish]
   ): string;
+  encodeFunctionData(functionFragment: "referrals", values: [string]): string;
   encodeFunctionData(
     functionFragment: "revokeRole",
     values: [BytesLike, string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "set_fee_account",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "set_fee_value",
+    values: [BigNumberish, BigNumberish, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "set_usd_vault",
@@ -161,9 +188,12 @@ export interface SsethInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "stake",
-    values: [string, BigNumberish]
+    values: [string, BigNumberish, string]
   ): string;
-  encodeFunctionData(functionFragment: "stake_eth", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "stake_eth",
+    values: [string, string]
+  ): string;
   encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "token_to_vault",
@@ -216,6 +246,12 @@ export interface SsethInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "checkRole", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "earning", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "feeConfig", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "fee_account",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "finished_unstake_accept",
     data: BytesLike
@@ -232,7 +268,16 @@ export interface SsethInterface extends utils.Interface {
     functionFragment: "pre_redeem_amount",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "referrals", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "revokeRole", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "set_fee_account",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "set_fee_value",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "set_usd_vault",
     data: BytesLike
@@ -274,9 +319,9 @@ export interface SsethInterface extends utils.Interface {
     "Approval(address,address,uint256)": EventFragment;
     "Borrowed(address,uint256)": EventFragment;
     "Initialized(uint64)": EventFragment;
+    "ReferralBound(address,address)": EventFragment;
     "Staked(address,address,uint256,uint256)": EventFragment;
     "Transfer(address,address,uint256)": EventFragment;
-    "ReferralBound(address,address)": EventFragment;
     "UnstakeAccepted(uint256,address,address,uint256,uint256,uint256,uint256)": EventFragment;
     "UnstakeFinished(uint256)": EventFragment;
   };
@@ -284,9 +329,9 @@ export interface SsethInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "Approval"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Borrowed"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ReferralBound"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Staked"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "ReferralBound"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "UnstakeAccepted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "UnstakeFinished"): EventFragment;
 }
@@ -321,6 +366,17 @@ export type InitializedEvent = TypedEvent<[BigNumber], InitializedEventObject>;
 
 export type InitializedEventFilter = TypedEventFilter<InitializedEvent>;
 
+export interface ReferralBoundEventObject {
+  user: string;
+  referrer: string;
+}
+export type ReferralBoundEvent = TypedEvent<
+  [string, string],
+  ReferralBoundEventObject
+>;
+
+export type ReferralBoundEventFilter = TypedEventFilter<ReferralBoundEvent>;
+
 export interface StakedEventObject {
   staker: string;
   receiver: string;
@@ -345,17 +401,6 @@ export type TransferEvent = TypedEvent<
 >;
 
 export type TransferEventFilter = TypedEventFilter<TransferEvent>;
-
-export interface ReferralBoundEventObject {
-  user: string;
-  referrer: string;
-}
-export type ReferralBoundEvent = TypedEvent<
-  [string, string],
-  ReferralBoundEventObject
->;
-
-export type ReferralBoundEventFilter = TypedEventFilter<ReferralBoundEvent>;
 
 export interface UnstakeAcceptedEventObject {
   accept_id: BigNumber;
@@ -440,6 +485,21 @@ export interface Sseth extends BaseContract {
 
     decimals(overrides?: CallOverrides): Promise<[number]>;
 
+    earning(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    feeConfig(
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, BigNumber, BigNumber, BigNumber] & {
+        earning_base_fee: BigNumber;
+        redeem_base_fee: BigNumber;
+        referral_fee: BigNumber;
+        risk_amount_checker: BigNumber;
+      }
+    >;
+
+    fee_account(overrides?: CallOverrides): Promise<[string]>;
+
     finished_unstake_accept(
       accept_id: BigNumberish,
       overrides?: Overrides & { from?: string }
@@ -479,14 +539,29 @@ export interface Sseth extends BaseContract {
     ): Promise<
       [BigNumber, BigNumber, BigNumber] & {
         redeem_earning: BigNumber;
-        redeem_eth: BigNumber;
-        redeem_usdc: BigNumber;
+        withdraw_eth: BigNumber;
+        repay_usdc: BigNumber;
       }
     >;
+
+    referrals(arg0: string, overrides?: CallOverrides): Promise<[string]>;
 
     revokeRole(
       role: BytesLike,
       account: string,
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
+
+    set_fee_account(
+      _fee_account: string,
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
+
+    set_fee_value(
+      _earning_fee: BigNumberish,
+      _redeem_base_fee: BigNumberish,
+      _referral_fee: BigNumberish,
+      _risk_amount_checker: BigNumberish,
       overrides?: Overrides & { from?: string }
     ): Promise<ContractTransaction>;
 
@@ -498,11 +573,13 @@ export interface Sseth extends BaseContract {
     stake(
       receiver: string,
       amount: BigNumberish,
+      ref: string,
       overrides?: Overrides & { from?: string }
     ): Promise<ContractTransaction>;
 
     stake_eth(
       receiver: string,
+      ref: string,
       overrides?: PayableOverrides & { from?: string }
     ): Promise<ContractTransaction>;
 
@@ -557,8 +634,8 @@ export interface Sseth extends BaseContract {
         receiver: string;
         unstake_amount: BigNumber;
         redeem_earning: BigNumber;
-        redeem_eth: BigNumber;
-        redeem_usdc: BigNumber;
+        withdraw_eth: BigNumber;
+        repay_usdc: BigNumber;
         accept_timestamp: BigNumber;
         status: number;
       }
@@ -601,6 +678,21 @@ export interface Sseth extends BaseContract {
 
   decimals(overrides?: CallOverrides): Promise<number>;
 
+  earning(overrides?: CallOverrides): Promise<BigNumber>;
+
+  feeConfig(
+    overrides?: CallOverrides
+  ): Promise<
+    [BigNumber, BigNumber, BigNumber, BigNumber] & {
+      earning_base_fee: BigNumber;
+      redeem_base_fee: BigNumber;
+      referral_fee: BigNumber;
+      risk_amount_checker: BigNumber;
+    }
+  >;
+
+  fee_account(overrides?: CallOverrides): Promise<string>;
+
   finished_unstake_accept(
     accept_id: BigNumberish,
     overrides?: Overrides & { from?: string }
@@ -640,14 +732,29 @@ export interface Sseth extends BaseContract {
   ): Promise<
     [BigNumber, BigNumber, BigNumber] & {
       redeem_earning: BigNumber;
-      redeem_eth: BigNumber;
-      redeem_usdc: BigNumber;
+      withdraw_eth: BigNumber;
+      repay_usdc: BigNumber;
     }
   >;
+
+  referrals(arg0: string, overrides?: CallOverrides): Promise<string>;
 
   revokeRole(
     role: BytesLike,
     account: string,
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
+
+  set_fee_account(
+    _fee_account: string,
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
+
+  set_fee_value(
+    _earning_fee: BigNumberish,
+    _redeem_base_fee: BigNumberish,
+    _referral_fee: BigNumberish,
+    _risk_amount_checker: BigNumberish,
     overrides?: Overrides & { from?: string }
   ): Promise<ContractTransaction>;
 
@@ -659,11 +766,13 @@ export interface Sseth extends BaseContract {
   stake(
     receiver: string,
     amount: BigNumberish,
+    ref: string,
     overrides?: Overrides & { from?: string }
   ): Promise<ContractTransaction>;
 
   stake_eth(
     receiver: string,
+    ref: string,
     overrides?: PayableOverrides & { from?: string }
   ): Promise<ContractTransaction>;
 
@@ -708,8 +817,8 @@ export interface Sseth extends BaseContract {
       receiver: string;
       unstake_amount: BigNumber;
       redeem_earning: BigNumber;
-      redeem_eth: BigNumber;
-      redeem_usdc: BigNumber;
+      withdraw_eth: BigNumber;
+      repay_usdc: BigNumber;
       accept_timestamp: BigNumber;
       status: number;
     }
@@ -752,6 +861,21 @@ export interface Sseth extends BaseContract {
 
     decimals(overrides?: CallOverrides): Promise<number>;
 
+    earning(overrides?: CallOverrides): Promise<BigNumber>;
+
+    feeConfig(
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, BigNumber, BigNumber, BigNumber] & {
+        earning_base_fee: BigNumber;
+        redeem_base_fee: BigNumber;
+        referral_fee: BigNumber;
+        risk_amount_checker: BigNumber;
+      }
+    >;
+
+    fee_account(overrides?: CallOverrides): Promise<string>;
+
     finished_unstake_accept(
       accept_id: BigNumberish,
       overrides?: CallOverrides
@@ -791,14 +915,29 @@ export interface Sseth extends BaseContract {
     ): Promise<
       [BigNumber, BigNumber, BigNumber] & {
         redeem_earning: BigNumber;
-        redeem_eth: BigNumber;
-        redeem_usdc: BigNumber;
+        withdraw_eth: BigNumber;
+        repay_usdc: BigNumber;
       }
     >;
+
+    referrals(arg0: string, overrides?: CallOverrides): Promise<string>;
 
     revokeRole(
       role: BytesLike,
       account: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    set_fee_account(
+      _fee_account: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    set_fee_value(
+      _earning_fee: BigNumberish,
+      _redeem_base_fee: BigNumberish,
+      _referral_fee: BigNumberish,
+      _risk_amount_checker: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -807,10 +946,15 @@ export interface Sseth extends BaseContract {
     stake(
       receiver: string,
       amount: BigNumberish,
+      ref: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    stake_eth(receiver: string, overrides?: CallOverrides): Promise<BigNumber>;
+    stake_eth(
+      receiver: string,
+      ref: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     symbol(overrides?: CallOverrides): Promise<string>;
 
@@ -861,8 +1005,8 @@ export interface Sseth extends BaseContract {
         receiver: string;
         unstake_amount: BigNumber;
         redeem_earning: BigNumber;
-        redeem_eth: BigNumber;
-        redeem_usdc: BigNumber;
+        withdraw_eth: BigNumber;
+        repay_usdc: BigNumber;
         accept_timestamp: BigNumber;
         status: number;
       }
@@ -896,6 +1040,15 @@ export interface Sseth extends BaseContract {
     "Initialized(uint64)"(version?: null): InitializedEventFilter;
     Initialized(version?: null): InitializedEventFilter;
 
+    "ReferralBound(address,address)"(
+      user?: string | null,
+      referrer?: null
+    ): ReferralBoundEventFilter;
+    ReferralBound(
+      user?: string | null,
+      referrer?: null
+    ): ReferralBoundEventFilter;
+
     "Staked(address,address,uint256,uint256)"(
       staker?: string | null,
       receiver?: null,
@@ -919,15 +1072,6 @@ export interface Sseth extends BaseContract {
       to?: string | null,
       value?: null
     ): TransferEventFilter;
-
-    "ReferralBound(address,address)"(
-      user?: string | null,
-      referrer?: null
-    ): ReferralBoundEventFilter;
-    ReferralBound(
-      user?: string | null,
-      referrer?: null
-    ): ReferralBoundEventFilter;
 
     "UnstakeAccepted(uint256,address,address,uint256,uint256,uint256,uint256)"(
       accept_id?: null,
@@ -983,6 +1127,12 @@ export interface Sseth extends BaseContract {
 
     decimals(overrides?: CallOverrides): Promise<BigNumber>;
 
+    earning(overrides?: CallOverrides): Promise<BigNumber>;
+
+    feeConfig(overrides?: CallOverrides): Promise<BigNumber>;
+
+    fee_account(overrides?: CallOverrides): Promise<BigNumber>;
+
     finished_unstake_accept(
       accept_id: BigNumberish,
       overrides?: Overrides & { from?: string }
@@ -1021,9 +1171,24 @@ export interface Sseth extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    referrals(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+
     revokeRole(
       role: BytesLike,
       account: string,
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
+
+    set_fee_account(
+      _fee_account: string,
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
+
+    set_fee_value(
+      _earning_fee: BigNumberish,
+      _redeem_base_fee: BigNumberish,
+      _referral_fee: BigNumberish,
+      _risk_amount_checker: BigNumberish,
       overrides?: Overrides & { from?: string }
     ): Promise<BigNumber>;
 
@@ -1035,11 +1200,13 @@ export interface Sseth extends BaseContract {
     stake(
       receiver: string,
       amount: BigNumberish,
+      ref: string,
       overrides?: Overrides & { from?: string }
     ): Promise<BigNumber>;
 
     stake_eth(
       receiver: string,
+      ref: string,
       overrides?: PayableOverrides & { from?: string }
     ): Promise<BigNumber>;
 
@@ -1125,6 +1292,12 @@ export interface Sseth extends BaseContract {
 
     decimals(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    earning(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    feeConfig(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    fee_account(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     finished_unstake_accept(
       accept_id: BigNumberish,
       overrides?: Overrides & { from?: string }
@@ -1163,9 +1336,27 @@ export interface Sseth extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    referrals(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     revokeRole(
       role: BytesLike,
       account: string,
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
+
+    set_fee_account(
+      _fee_account: string,
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
+
+    set_fee_value(
+      _earning_fee: BigNumberish,
+      _redeem_base_fee: BigNumberish,
+      _referral_fee: BigNumberish,
+      _risk_amount_checker: BigNumberish,
       overrides?: Overrides & { from?: string }
     ): Promise<PopulatedTransaction>;
 
@@ -1177,11 +1368,13 @@ export interface Sseth extends BaseContract {
     stake(
       receiver: string,
       amount: BigNumberish,
+      ref: string,
       overrides?: Overrides & { from?: string }
     ): Promise<PopulatedTransaction>;
 
     stake_eth(
       receiver: string,
+      ref: string,
       overrides?: PayableOverrides & { from?: string }
     ): Promise<PopulatedTransaction>;
 

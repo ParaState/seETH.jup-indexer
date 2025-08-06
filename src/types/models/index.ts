@@ -14,3 +14,9 @@ export {UnstakeAccepted} from "./UnstakeAccepted"
 
 export {ReferralBound} from "./ReferralBound"
 
+export {RemoteBalanceUpdated} from "./RemoteBalanceUpdated"
+
+export {RiskBalanceUpdated} from "./RiskBalanceUpdated"
+
+export {USDVaultWithdraw} from "./USDVaultWithdraw"
+

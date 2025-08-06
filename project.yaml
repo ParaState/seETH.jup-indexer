@@ -7,15 +7,15 @@ description: >-
   SubQuery project
 runner:
   node:
-    name: '@subql/node-ethereum'
-    version: '>=3.0.0'
+    name: "@subql/node-ethereum"
+    version: ">=3.0.0"
   query:
-    name: '@subql/query'
-    version: '*'
+    name: "@subql/query"
+    version: "*"
 schema:
   file: ./schema.graphql
 network:
-  chainId: '8453'
+  chainId: "8453"
   endpoint:
     - https://mainnet.base.org
     - https://base.llamarpc.com
@@ -30,7 +30,7 @@ dataSources:
     startBlock: 33837270
     options:
       abi: erc20
-      address: '0x855316E073036983658672F0d894beA0BF2881a7'
+      address: "0x855316E073036983658672F0d894beA0BF2881a7"
     assets:
       erc20:
         file: ./abis/erc20.json
@@ -52,7 +52,7 @@ dataSources:
     startBlock: 33837270
     options:
       abi: sseth
-      address: '0x855316E073036983658672F0d894beA0BF2881a7'
+      address: "0x855316E073036983658672F0d894beA0BF2881a7"
     assets:
       sseth:
         file: ./abis/sseth.json
@@ -73,10 +73,41 @@ dataSources:
               - >-
                 UnstakeAccepted(uint256 accept_id, address indexed staker,
                 address receiver, uint256 unstake_amount, uint256
-                redeem_earning, uint256 redeem_eth, uint256 redeem_usdc)
+                redeem_earning, uint256 withdraw_eth, uint256 repay_usdc)
         - kind: ethereum/LogHandler
           handler: handleUnstakeFinishedLog
           filter:
             topics:
               - UnstakeFinished(uint256 accept_id)
+        - kind: ethereum/LogHandler
+          handler: handleReferralBoundLog
+          filter:
+            topics:
+              - ReferralBound(address indexed user, address referrer)
+  - kind: ethereum/Runtime
+    startBlock: 33837270
+    options:
+      abi: usdvault
+      address: "0xDBF519aa84046Ae20D4189529a63248c08994600"
+    assets:
+      usdvault:
+        file: ./abis/usdvault.json
+    mapping:
+      file: ./dist/index.js
+      handlers:
+        - kind: ethereum/LogHandler
+          handler: handleRemoteBalanceUpdatedLog
+          filter:
+            topics:
+              - RemoteBalanceUpdated(uint8 op, uint256 amount)
+        - kind: ethereum/LogHandler
+          handler: handleRiskBalanceUpdatedLog
+          filter:
+            topics:
+              - RiskBalanceUpdated(uint256 newBalance)
+        - kind: ethereum/LogHandler
+          handler: handleUSDVaultWithdrawLog
+          filter:
+            topics:
+              - Withdraw(address indexed to, uint256 amount)
 repository: https://github.com/subquery/ethereum-subql-starter

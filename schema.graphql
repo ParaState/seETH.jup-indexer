@@ -63,3 +63,29 @@ type ReferralBound @entity {
   referrer: String! @index
   timestamp: Date
 }
+
+type RemoteBalanceUpdated @entity {
+  id: ID! # Transaction hash
+  blockHeight: BigInt
+  contractAddress: String!
+  opType: Int! # 0 for ADD, 1 for CLAIM
+  amount: BigInt!
+  timestamp: Date
+}
+
+type RiskBalanceUpdated @entity {
+  id: ID! # Transaction hash
+  blockHeight: BigInt
+  contractAddress: String!
+  newBalance: BigInt!
+  timestamp: Date
+}
+
+type USDVaultWithdraw @entity {
+  id: ID! # Transaction hash
+  blockHeight: BigInt
+  contractAddress: String!
+  to: String! @index
+  amount: BigInt!
+  timestamp: Date
+}

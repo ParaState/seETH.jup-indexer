@@ -10,3 +10,5 @@ export { Erc20__factory } from "./Erc20__factory";
 export { SsethAbi__factory } from "./SsethAbi__factory";
 
 export { Sseth__factory } from "./Sseth__factory";
+
+export { Usdvault__factory } from "./Usdvault__factory";
