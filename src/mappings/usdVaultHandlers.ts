@@ -1,4 +1,4 @@
-import { RemoteBalanceUpdated, RiskBalanceUpdated, USDVaultWithdraw } from "../types";
+import { RemoteBalanceUpdated, RiskBalanceUpdated, UsdVaultWithdraw } from "../types";
 import { RemoteBalanceUpdatedLog, RiskBalanceUpdatedLog, WithdrawLog } from "../types/abi-interfaces/Usdvault";
 import assert from "assert";
 
@@ -50,7 +50,7 @@ export async function handleRiskBalanceUpdatedLog(riskBalanceUpdated: RiskBalanc
   await record.save();
 }
 
-export async function handleUSDVaultWithdrawLog(withdraw: WithdrawLog): Promise<void> {
+export async function handleUsdVaultWithdrawLog(withdraw: WithdrawLog): Promise<void> {
   logger.info(`New USD vault withdraw transaction log at block ${withdraw.blockNumber}`);
   assert(withdraw.args, "No withdraw.args");
 
@@ -63,7 +63,7 @@ export async function handleUSDVaultWithdrawLog(withdraw: WithdrawLog): Promise<
   logger.info(`withdraw.args.amount: ${withdraw.args.amount}`);
   logger.info(`withdraw========================================`);
 
-  const record = USDVaultWithdraw.create({
+  const record = UsdVaultWithdraw.create({
     id: withdraw.transactionHash,
     blockHeight: BigInt(withdraw.blockNumber),
     contractAddress: withdraw.address,

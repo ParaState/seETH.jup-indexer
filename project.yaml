@@ -106,7 +106,7 @@ dataSources:
             topics:
               - RiskBalanceUpdated(uint256 newBalance)
         - kind: ethereum/LogHandler
-          handler: handleUSDVaultWithdrawLog
+          handler: handleUsdVaultWithdrawLog
           filter:
             topics:
               - Withdraw(address indexed to, uint256 amount)

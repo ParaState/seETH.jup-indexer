@@ -160,7 +160,7 @@ const project: EthereumProject = {
           },
           {
             kind: EthereumHandlerKind.Event,
-            handler: "handleUSDVaultWithdrawLog",
+            handler: "handleUsdVaultWithdrawLog",
             filter: {
               topics: ["Withdraw(address indexed to, uint256 amount)"],
             },
