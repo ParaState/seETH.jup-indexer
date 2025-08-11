@@ -30,7 +30,7 @@ dataSources:
     startBlock: 33837270
     options:
       abi: erc20
-      address: '0x855316E073036983658672F0d894beA0BF2881a7'
+      address: '0xea3148B5A6A836c8f09565Da610ca0B92b7b2062'
     assets:
       erc20:
         file: ./abis/erc20.json
@@ -52,7 +52,7 @@ dataSources:
     startBlock: 33837270
     options:
       abi: sseth
-      address: '0x855316E073036983658672F0d894beA0BF2881a7'
+      address: '0xea3148B5A6A836c8f09565Da610ca0B92b7b2062'
     assets:
       sseth:
         file: ./abis/sseth.json
@@ -88,7 +88,7 @@ dataSources:
     startBlock: 33837270
     options:
       abi: usdvault
-      address: '0xDBF519aa84046Ae20D4189529a63248c08994600'
+      address: '0xcd17df5291b1DaC0b6000746A3C081dcb2AF042a'
     assets:
       usdvault:
         file: ./abis/usdvault.json
