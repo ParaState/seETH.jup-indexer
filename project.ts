@@ -9,7 +9,7 @@ const mode = process.env.NODE_ENV || "production";
 const dotenvPath = path.resolve(__dirname, `.env${mode !== "production" ? `.${mode}` : ""}`);
 dotenv.config({ path: dotenvPath });
 
-const { SSETH_ADDRESS, USD_VAULT_ADDRESS, START_BLOCK } = process.env;
+const { SEETH_ADDRESS, USD_VAULT_ADDRESS, START_BLOCK } = process.env;
 
 const startBlock = START_BLOCK ? parseInt(START_BLOCK) : 33837270;
 
@@ -57,7 +57,7 @@ const project: EthereumProject = {
         // Must be a key of assets
         abi: "erc20",
         // # this is the contract address for wrapped ether https://etherscan.io/address/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
-        address: SSETH_ADDRESS,
+        address: SEETH_ADDRESS,
       },
       assets: new Map([["erc20", { file: "./abis/erc20.json" }]]),
       mapping: {
@@ -94,7 +94,7 @@ const project: EthereumProject = {
       startBlock: startBlock,
       options: {
         abi: "sseth",
-        address: SSETH_ADDRESS,
+        address: SEETH_ADDRESS,
       },
       assets: new Map([["sseth", { file: "./abis/sseth.json" }]]),
       mapping: {
