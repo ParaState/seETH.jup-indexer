@@ -83,6 +83,13 @@ export async function handleUnstakeFinishedLog(finished: UnstakeFinishedLog): Pr
 
   const record = await UnstakeAccepted.get(finished.args.accept_id.toString());
 
+  logger.info(`finished========================================`);
+  logger.info(`finished.address: ${finished.address}`);
+  logger.info(`finished.blockNumber: ${finished.blockNumber}`);
+  logger.info(`finished.transactionHash: ${finished.transactionHash}`);
+  logger.info(`finished.transaction.blockTimestamp: ${finished.transaction.blockTimestamp}`);
+  logger.info(`finished.args.accept_id: ${finished.args.accept_id}`);
+
   if (record && record.status === "pending") {
     record.status = "success";
     await record.save();

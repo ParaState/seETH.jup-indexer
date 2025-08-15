@@ -27,10 +27,10 @@ network:
       https://base.api.onfinality.io/rpc?apikey=e76945fc-1f57-42a9-8bf4-d1b13e314835
 dataSources:
   - kind: ethereum/Runtime
-    startBlock: 34108600
+    startBlock: 34216120
     options:
       abi: erc20
-      address: '0x9Fe6Ae81eB658Ce9Ce9C7d68528Fe88DEB86aE75'
+      address: '0x67B4B82912BE44aDA40ed288936a5ca2dD002ff2'
     assets:
       erc20:
         file: ./abis/erc20.json
@@ -49,10 +49,10 @@ dataSources:
                 Transfer(address indexed from, address indexed to, uint256
                 amount)
   - kind: ethereum/Runtime
-    startBlock: 34108600
+    startBlock: 34216120
     options:
       abi: sseth
-      address: '0x9Fe6Ae81eB658Ce9Ce9C7d68528Fe88DEB86aE75'
+      address: '0x67B4B82912BE44aDA40ed288936a5ca2dD002ff2'
     assets:
       sseth:
         file: ./abis/sseth.json
@@ -85,10 +85,10 @@ dataSources:
             topics:
               - ReferralBound(address indexed user, address referrer)
   - kind: ethereum/Runtime
-    startBlock: 34108600
+    startBlock: 34216120
     options:
       abi: usdvault
-      address: '0x5238cfC5A72F541B98348Cf7e9847A3AfE36db88'
+      address: '0x408ac6c4f73E9574faC234Dda5E1640b7228b8F3'
     assets:
       usdvault:
         file: ./abis/usdvault.json
