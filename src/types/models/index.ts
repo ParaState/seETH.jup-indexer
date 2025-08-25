@@ -2,21 +2,15 @@
 
 // Auto-generated , DO NOT EDIT
 
-export {Transfer} from "./Transfer"
+export {Deposit} from "./Deposit"
 
-export {Approval} from "./Approval"
+export {Withdraw} from "./Withdraw"
 
-export {StakedRecord} from "./StakedRecord"
+export {RedeemRequested} from "./RedeemRequested"
 
-export {Staker} from "./Staker"
+export {RedeemCancelled} from "./RedeemCancelled"
 
-export {UnstakeAccepted} from "./UnstakeAccepted"
+export {RedeemApproved} from "./RedeemApproved"
 
-export {ReferralBound} from "./ReferralBound"
-
-export {RemoteBalanceUpdated} from "./RemoteBalanceUpdated"
-
-export {RiskBalanceUpdated} from "./RiskBalanceUpdated"
-
-export {UsdVaultWithdraw} from "./UsdVaultWithdraw"
+export {RedeemExecuted} from "./RedeemExecuted"
 

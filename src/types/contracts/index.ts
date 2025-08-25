@@ -3,23 +3,23 @@
 /* eslint-disable */
 export * as factories from "./factories";
 
-export { Erc20Abi } from "./Erc20Abi";
-
 export { Erc20 } from "./Erc20";
 
-export { SsethAbi } from "./SsethAbi";
+export { SeETHRedeem } from "./SeETHRedeem";
 
-export { Sseth } from "./Sseth";
+export { SeETHV2 } from "./SeETHV2";
+
+export { Seeth } from "./Seeth";
 
 export { Usdvault } from "./Usdvault";
 
 
-export { Erc20Abi__factory } from "./factories/Erc20Abi__factory";
-
 export { Erc20__factory } from "./factories/Erc20__factory";
 
-export { SsethAbi__factory } from "./factories/SsethAbi__factory";
+export { SeETHRedeem__factory } from "./factories/SeETHRedeem__factory";
 
-export { Sseth__factory } from "./factories/Sseth__factory";
+export { SeETHV2__factory } from "./factories/SeETHV2__factory";
+
+export { Seeth__factory } from "./factories/Seeth__factory";
 
 export { Usdvault__factory } from "./factories/Usdvault__factory";

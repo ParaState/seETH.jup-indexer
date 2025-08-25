@@ -1,0 +1,47 @@
+# Cursor Rules for seETH.jup-indexer Project
+
+## Project Overview
+
+This is a SubQuery indexer project for seETH (staked ETH) protocol on Jupiter. The project indexes blockchain events and provides GraphQL API for querying staking data.
+
+## Files to Ignore
+
+- `node_modules/` - Dependencies, don't analyze or modify
+- `dist/` - Build output, don't analyze or modify
+- `build/` - Build artifacts, don't analyze or modify
+- `.git/` - Version control, don't analyze or modify
+- `*.log` - Log files, don't analyze or modify
+- `coverage/` - Test coverage reports, don't analyze or modify
+- `.env*` - Environment files, don't analyze or modify
+- `docker-compose.override.yml` - Local docker overrides, don't analyze or modify
+
+## Focus Areas
+
+- `src/` - Main source code directory
+- `schema.graphql` - GraphQL schema definition
+- `project.yaml` - SubQuery project configuration
+- `abis/` - Contract ABIs for blockchain interaction
+- `types/` - TypeScript type definitions
+
+## Code Patterns to Focus On
+
+- SubQuery mapping handlers in `src/mappings/`
+- GraphQL schema definitions
+- TypeScript interfaces and types
+- Blockchain event handling logic
+- Contract interaction patterns
+
+## Architecture Notes
+
+- This is a SubQuery indexer that processes blockchain events
+- Uses TypeScript with strict typing
+- Follows SubQuery best practices for event indexing
+- Provides GraphQL API for frontend consumption
+
+## When Making Changes
+
+- Always maintain TypeScript type safety
+- Follow SubQuery mapping patterns
+- Update GraphQL schema when adding new entities
+- Ensure proper error handling in blockchain interactions
+- Test mapping handlers thoroughly

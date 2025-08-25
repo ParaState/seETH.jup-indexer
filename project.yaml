@@ -1,7 +1,7 @@
 # // Auto-generated , DO NOT EDIT
 specVersion: 1.0.0
 version: 0.0.1
-name: ssETH
+name: seETH
 description: >-
   This project can be use as a starting point for developing your new Ethereum
   SubQuery project
@@ -29,85 +29,65 @@ dataSources:
   - kind: ethereum/Runtime
     startBlock: 34216120
     options:
-      abi: erc20
-      address: '0x67B4B82912BE44aDA40ed288936a5ca2dD002ff2'
+      abi: seethv2
+      address: '0x90b97E83e22AFa2e6A96b3549A0E495D5Bae61aF'
     assets:
-      erc20:
-        file: ./abis/erc20.json
+      seethv2:
+        file: ./abis/SeETHV2.json
     mapping:
       file: ./dist/index.js
       handlers:
-        - kind: ethereum/TransactionHandler
-          handler: handleTransaction
-          filter:
-            function: approve(address spender, uint256 rawAmount)
         - kind: ethereum/LogHandler
-          handler: handleLog
+          handler: handleDeposit
           filter:
             topics:
               - >-
-                Transfer(address indexed from, address indexed to, uint256
-                amount)
+                Deposit(address indexed sender, address indexed owner, uint256
+                assets, uint256 shares)
+        - kind: ethereum/LogHandler
+          handler: handleWithdraw
+          filter:
+            topics:
+              - >-
+                Withdraw(address indexed sender, address indexed receiver,
+                address indexed owner, uint256 assets, uint256 shares)
   - kind: ethereum/Runtime
     startBlock: 34216120
     options:
-      abi: sseth
-      address: '0x67B4B82912BE44aDA40ed288936a5ca2dD002ff2'
+      abi: seethredeem
+      address: '0xFC4EE541377F3b6641c23CBE82F6f04388290421'
     assets:
-      sseth:
-        file: ./abis/sseth.json
+      seethredeem:
+        file: ./abis/SeETHRedeem.json
     mapping:
       file: ./dist/index.js
       handlers:
         - kind: ethereum/LogHandler
-          handler: handleStakedLog
+          handler: handleRedeemRequested
           filter:
             topics:
               - >-
-                Staked(address indexed staker, address receiver, uint256 amount,
-                uint256 minted)
+                RedeemRequested(uint256 indexed requestId, address indexed
+                owner, uint256 shares)
         - kind: ethereum/LogHandler
-          handler: handleUnstakeAcceptedLog
+          handler: handleRedeemCancelled
           filter:
             topics:
               - >-
-                UnstakeAccepted(uint256 accept_id, address indexed staker,
-                address receiver, uint256 unstake_amount, uint256
-                redeem_earning, uint256 withdraw_eth, uint256 repay_usdc)
+                RedeemCancelled(uint256 indexed requestId, address indexed
+                owner, uint256 shares)
         - kind: ethereum/LogHandler
-          handler: handleUnstakeFinishedLog
+          handler: handleRedeemApproved
           filter:
             topics:
-              - UnstakeFinished(uint256 accept_id)
+              - >-
+                RedeemApproved(uint256 indexed requestId, address indexed owner,
+                uint256 shares)
         - kind: ethereum/LogHandler
-          handler: handleReferralBoundLog
+          handler: handleRedeemExecuted
           filter:
             topics:
-              - ReferralBound(address indexed user, address referrer)
-  - kind: ethereum/Runtime
-    startBlock: 34216120
-    options:
-      abi: usdvault
-      address: '0x408ac6c4f73E9574faC234Dda5E1640b7228b8F3'
-    assets:
-      usdvault:
-        file: ./abis/usdvault.json
-    mapping:
-      file: ./dist/index.js
-      handlers:
-        - kind: ethereum/LogHandler
-          handler: handleRemoteBalanceUpdatedLog
-          filter:
-            topics:
-              - RemoteBalanceUpdated(uint8 op, uint256 amount)
-        - kind: ethereum/LogHandler
-          handler: handleRiskBalanceUpdatedLog
-          filter:
-            topics:
-              - RiskBalanceUpdated(uint256 newBalance)
-        - kind: ethereum/LogHandler
-          handler: handleUsdVaultWithdrawLog
-          filter:
-            topics:
-              - Withdraw(address indexed to, uint256 amount)
+              - >-
+                RedeemExecuted(uint256 indexed requestId, address indexed owner,
+                uint256 shares, uint256 assetsPaid)
 repository: https://github.com/subquery/ethereum-subql-starter

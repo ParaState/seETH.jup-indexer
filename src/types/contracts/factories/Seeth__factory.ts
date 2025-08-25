@@ -4,7 +4,7 @@
 
 import { Contract, Signer, utils } from "ethers";
 import type { Provider } from "@ethersproject/providers";
-import type { Sseth, SsethInterface } from "../Sseth";
+import type { Seeth, SeethInterface } from "../Seeth";
 
 const _abi = [
   {
@@ -1035,12 +1035,12 @@ const _abi = [
   },
 ] as const;
 
-export class Sseth__factory {
+export class Seeth__factory {
   static readonly abi = _abi;
-  static createInterface(): SsethInterface {
-    return new utils.Interface(_abi) as SsethInterface;
+  static createInterface(): SeethInterface {
+    return new utils.Interface(_abi) as SeethInterface;
   }
-  static connect(address: string, signerOrProvider: Signer | Provider): Sseth {
-    return new Contract(address, _abi, signerOrProvider) as Sseth;
+  static connect(address: string, signerOrProvider: Signer | Provider): Seeth {
+    return new Contract(address, _abi, signerOrProvider) as Seeth;
   }
 }

@@ -9,15 +9,36 @@ const mode = process.env.NODE_ENV || "production";
 const dotenvPath = path.resolve(__dirname, `.env${mode !== "production" ? `.${mode}` : ""}`);
 dotenv.config({ path: dotenvPath });
 
-const { SEETH_ADDRESS, USD_VAULT_ADDRESS, START_BLOCK } = process.env;
+const { SE_VAULT_ADDRESS, SE_REDEEM_ADDRESS, START_BLOCK } = process.env;
 
 const startBlock = START_BLOCK ? parseInt(START_BLOCK) : 33837270;
+
+// erc4626 event
+// event Deposit(address indexed sender, address indexed owner, uint256 assets, uint256 shares);
+// event Withdraw(address indexed sender, address indexed receiver, address indexed owner, uint256 assets, uint256 shares)
+
+const SeETHV2Event = {
+  Deposit: "Deposit(address indexed sender, address indexed owner, uint256 assets, uint256 shares)",
+  Withdraw: "Withdraw(address indexed sender, address indexed receiver, address indexed owner, uint256 assets, uint256 shares)",
+};
+
+// event RedeemRequested(uint256 indexed requestId, address indexed owner, uint256 shares);
+// event RedeemCancelled(uint256 indexed requestId, address indexed owner, uint256 shares);
+// event RedeemApproved(uint256 indexed requestId, address indexed owner, uint256 shares);
+// event RedeemExecuted(uint256 indexed requestId, address indexed owner, uint256 shares, uint256 assetsPaid);
+
+const SeETHRedeemEvent = {
+  RedeemRequested: "RedeemRequested(uint256 indexed requestId, address indexed owner, uint256 shares)",
+  RedeemCancelled: "RedeemCancelled(uint256 indexed requestId, address indexed owner, uint256 shares)",
+  RedeemApproved: "RedeemApproved(uint256 indexed requestId, address indexed owner, uint256 shares)",
+  RedeemExecuted: "RedeemExecuted(uint256 indexed requestId, address indexed owner, uint256 shares, uint256 assetsPaid)",
+};
 
 // Can expand the Datasource processor types via the generic param
 const project: EthereumProject = {
   specVersion: "1.0.0",
   version: "0.0.1",
-  name: "ssETH",
+  name: "seETH",
   description: "This project can be use as a starting point for developing your new Ethereum SubQuery project",
   runner: {
     node: {
@@ -52,38 +73,27 @@ const project: EthereumProject = {
     {
       kind: EthereumDatasourceKind.Runtime,
       startBlock: startBlock,
-
       options: {
-        // Must be a key of assets
-        abi: "erc20",
-        // # this is the contract address for wrapped ether https://etherscan.io/address/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
-        address: SEETH_ADDRESS,
+        abi: "seethv2",
+        address: SE_VAULT_ADDRESS,
       },
-      assets: new Map([["erc20", { file: "./abis/erc20.json" }]]),
+      assets: new Map([["seethv2", { file: "./abis/SeETHV2.json" }]]),
       mapping: {
         file: "./dist/index.js",
         handlers: [
+          // ERC4626 Events
           {
-            kind: EthereumHandlerKind.Call,
-            handler: "handleTransaction",
+            kind: EthereumHandlerKind.Event,
+            handler: "handleDeposit",
             filter: {
-              /**
-               * The function can either be the function fragment or signature
-               * function: '0x095ea7b3'
-               * function: '0x7ff36ab500000000000000000000000000000000000000000000000000000000'
-               */
-              function: "approve(address spender, uint256 rawAmount)",
+              topics: [SeETHV2Event.Deposit],
             },
           },
           {
             kind: EthereumHandlerKind.Event,
-            handler: "handleLog",
+            handler: "handleWithdraw",
             filter: {
-              /**
-               * Follows standard log filters https://docs.ethers.io/v5/concepts/events/
-               * address: "0x60781C2586D68229fde47564546784ab3fACA982"
-               */
-              topics: ["Transfer(address indexed from, address indexed to, uint256 amount)"],
+              topics: [SeETHV2Event.Withdraw],
             },
           },
         ],
@@ -93,76 +103,40 @@ const project: EthereumProject = {
       kind: EthereumDatasourceKind.Runtime,
       startBlock: startBlock,
       options: {
-        abi: "sseth",
-        address: SEETH_ADDRESS,
+        abi: "seethredeem",
+        address: SE_REDEEM_ADDRESS,
       },
-      assets: new Map([["sseth", { file: "./abis/sseth.json" }]]),
+      assets: new Map([["seethredeem", { file: "./abis/SeETHRedeem.json" }]]),
       mapping: {
         file: "./dist/index.js",
         handlers: [
+          // SeETH Redeem Events
           {
             kind: EthereumHandlerKind.Event,
-            handler: "handleStakedLog",
+            handler: "handleRedeemRequested",
             filter: {
-              topics: ["Staked(address indexed staker, address receiver, uint256 amount, uint256 minted)"],
+              topics: [SeETHRedeemEvent.RedeemRequested],
             },
           },
           {
             kind: EthereumHandlerKind.Event,
-            handler: "handleUnstakeAcceptedLog",
+            handler: "handleRedeemCancelled",
             filter: {
-              topics: [
-                "UnstakeAccepted(uint256 accept_id, address indexed staker, address receiver, uint256 unstake_amount, uint256 redeem_earning, uint256 withdraw_eth, uint256 repay_usdc)",
-              ],
+              topics: [SeETHRedeemEvent.RedeemCancelled],
             },
           },
           {
             kind: EthereumHandlerKind.Event,
-            handler: "handleUnstakeFinishedLog",
+            handler: "handleRedeemApproved",
             filter: {
-              topics: ["UnstakeFinished(uint256 accept_id)"],
+              topics: [SeETHRedeemEvent.RedeemApproved],
             },
           },
           {
             kind: EthereumHandlerKind.Event,
-            handler: "handleReferralBoundLog",
+            handler: "handleRedeemExecuted",
             filter: {
-              topics: ["ReferralBound(address indexed user, address referrer)"],
-            },
-          },
-        ],
-      },
-    },
-    {
-      kind: EthereumDatasourceKind.Runtime,
-      startBlock: startBlock,
-      options: {
-        abi: "usdvault",
-        address: USD_VAULT_ADDRESS,
-      },
-      assets: new Map([["usdvault", { file: "./abis/usdvault.json" }]]),
-      mapping: {
-        file: "./dist/index.js",
-        handlers: [
-          {
-            kind: EthereumHandlerKind.Event,
-            handler: "handleRemoteBalanceUpdatedLog",
-            filter: {
-              topics: ["RemoteBalanceUpdated(uint8 op, uint256 amount)"],
-            },
-          },
-          {
-            kind: EthereumHandlerKind.Event,
-            handler: "handleRiskBalanceUpdatedLog",
-            filter: {
-              topics: ["RiskBalanceUpdated(uint256 newBalance)"],
-            },
-          },
-          {
-            kind: EthereumHandlerKind.Event,
-            handler: "handleUsdVaultWithdrawLog",
-            filter: {
-              topics: ["Withdraw(address indexed to, uint256 amount)"],
+              topics: [SeETHRedeemEvent.RedeemExecuted],
             },
           },
         ],

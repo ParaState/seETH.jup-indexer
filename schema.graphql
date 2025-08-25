@@ -2,90 +2,61 @@
 # Add the `@index` or `@index(unique: true)` annotation after any non-key field
 # https://academy.subquery.network/build/graphql.html#indexing-by-non-primary-key-field
 
-type Transfer @entity {
+# ERC4626 Events
+type Deposit @entity {
   id: ID! # Transaction hash
   blockHeight: BigInt
-  to: String!
-  from: String!
-  value: BigInt!
-  contractAddress: String!
-}
-
-type Approval @entity {
-  id: ID! # Transaction hash
-  blockHeight: BigInt
-  owner: String!
-  spender: String!
-  value: BigInt!
-  contractAddress: String!
-}
-
-type StakedRecord @entity {
-  id: ID! # Transaction hash
-  pool: String
-  blockHeight: BigInt
-  staker: String
-  stakeToken: String
-  stakeAmount: BigInt
-  mintReceiver: String
-  mintToken: String
-  mintAmount: BigInt
+  owner: String! @index
+  assets: BigInt!
+  shares: BigInt!
   timestamp: Date
 }
 
-type Staker @entity {
-  id: ID! @dbType(type: "String") # kecash256( pool, staker)
-  pool: String # stake pool address
-  staker: String # staker address
-  stakeAmount: BigInt # total staked amount
-  mintAmount: BigInt # total minted amount
-}
-
-type UnstakeAccepted @entity {
-  id: ID!
-  txHash: String
-  pool: String
+type Withdraw @entity {
+  id: ID! # Transaction hash
   blockHeight: BigInt
-  staker: String
-  unstakeToken: String
-  unstakeAmount: BigInt
-  redeemEarning: BigInt
-  withdrawEth: BigInt
-  repayUsdc: BigInt
-  status: String # "pending", "success", "failed"
+  sender: String! @index
+  receiver: String! @index
+  owner: String! @index
+  assets: BigInt!
+  shares: BigInt!
   timestamp: Date
 }
 
-type ReferralBound @entity {
+# SeETH Redeem Events
+type RedeemRequested @entity {
   id: ID! # Transaction hash
   blockHeight: BigInt
-  user: String! @index
-  referrer: String! @index
+  requestId: BigInt! @index
+  owner: String! @index
+  shares: BigInt!
   timestamp: Date
 }
 
-type RemoteBalanceUpdated @entity {
+type RedeemCancelled @entity {
   id: ID! # Transaction hash
   blockHeight: BigInt
-  contractAddress: String!
-  opType: Int! # 0 for ADD, 1 for CLAIM
-  amount: BigInt!
+  requestId: BigInt! @index
+  owner: String! @index
+  shares: BigInt!
   timestamp: Date
 }
 
-type RiskBalanceUpdated @entity {
+type RedeemApproved @entity {
   id: ID! # Transaction hash
   blockHeight: BigInt
-  contractAddress: String!
-  newBalance: BigInt!
+  requestId: BigInt! @index
+  owner: String! @index
+  shares: BigInt!
   timestamp: Date
 }
 
-type UsdVaultWithdraw @entity {
+type RedeemExecuted @entity {
   id: ID! # Transaction hash
   blockHeight: BigInt
-  contractAddress: String!
-  to: String! @index
-  amount: BigInt!
+  requestId: BigInt! @index
+  owner: String! @index
+  shares: BigInt!
+  assetsPaid: BigInt!
   timestamp: Date
 }
