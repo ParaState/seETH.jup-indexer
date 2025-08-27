@@ -2,6 +2,13 @@ import { RedeemRequest } from "../types";
 import { RedeemRequestedLog, RedeemCancelledLog, RedeemApprovedLog, RedeemExecutedLog } from "../types/abi-interfaces/SeETHRedeem";
 import assert from "assert";
 
+enum RedeemRequestStatus {
+  pending = "pending",
+  approved = "approved",
+  executed = "executed",
+  cancelled = "cancelled",
+}
+
 // SeETH RedeemRequested event
 // event RedeemRequested(uint256 indexed requestId, address indexed owner, uint256 shares);
 export async function handleRedeemRequested(redeemRequested: RedeemRequestedLog): Promise<void> {
@@ -32,11 +39,10 @@ export async function handleRedeemRequested(redeemRequested: RedeemRequestedLog)
     owner: owner,
     shares: shares,
     requestTime: requestTime,
-    approved: false,
-    executed: false,
-    cancelled: false,
+    status: RedeemRequestStatus.pending,
     createdAt: timestamp,
     updatedAt: timestamp,
+    requestedAt: timestamp,
     requestedTxHash: redeemRequested.transactionHash,
   });
 
@@ -68,12 +74,12 @@ export async function handleRedeemCancelled(redeemCancelled: RedeemCancelledLog)
 
   const record = await RedeemRequest.get(requestId);
   if (record) {
-    if (record.cancelled) {
+    if (record.status === RedeemRequestStatus.cancelled) {
       logger.warn(`RedeemRequest ${requestId} already cancelled`);
       return;
     }
 
-    record.cancelled = true;
+    record.status = RedeemRequestStatus.cancelled;
     record.updatedAt = timestamp;
     record.cancelledTxHash = redeemCancelled.transactionHash;
     record.cancelledAt = cancelledAt;
@@ -108,12 +114,12 @@ export async function handleRedeemApproved(redeemApproved: RedeemApprovedLog): P
 
   const record = await RedeemRequest.get(requestId);
   if (record) {
-    if (record.approved) {
+    if (record.status === RedeemRequestStatus.approved) {
       logger.warn(`RedeemRequest ${requestId} already approved`);
       return;
     }
 
-    record.approved = true;
+    record.status = RedeemRequestStatus.approved;
     record.updatedAt = timestamp;
     record.approvedTxHash = redeemApproved.transactionHash;
     record.approvedAt = approvedAt;
@@ -150,12 +156,12 @@ export async function handleRedeemExecuted(redeemExecuted: RedeemExecutedLog): P
 
   const record = await RedeemRequest.get(requestId);
   if (record) {
-    if (record.executed) {
+    if (record.status === RedeemRequestStatus.executed) {
       logger.warn(`RedeemRequest ${requestId} already executed`);
       return;
     }
 
-    record.executed = true;
+    record.status = RedeemRequestStatus.executed;
     record.assetsPaid = assetsPaid;
     record.updatedAt = timestamp;
     record.executedTxHash = redeemExecuted.transactionHash;

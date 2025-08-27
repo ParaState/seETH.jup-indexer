@@ -20,17 +20,13 @@ export class RedeemRequest implements CompatEntity {
         owner: string,
         shares: bigint,
         requestTime: bigint,
-        approved: boolean,
-        executed: boolean,
-        cancelled: boolean,
+        status: string,
     ) {
         this.id = id;
         this.owner = owner;
         this.shares = shares;
         this.requestTime = requestTime;
-        this.approved = approved;
-        this.executed = executed;
-        this.cancelled = cancelled;
+        this.status = status;
         
     }
 
@@ -39,15 +35,14 @@ export class RedeemRequest implements CompatEntity {
     public owner: string;
     public shares: bigint;
     public requestTime: bigint;
-    public approved: boolean;
-    public executed: boolean;
-    public cancelled: boolean;
-    public approvedAt?: Date;
-    public executedAt?: Date;
-    public cancelledAt?: Date;
+    public status: string;
     public assetsPaid?: bigint;
     public createdAt?: Date;
     public updatedAt?: Date;
+    public requestedAt?: Date;
+    public approvedAt?: Date;
+    public executedAt?: Date;
+    public cancelledAt?: Date;
     public requestedTxHash?: string;
     public cancelledTxHash?: string;
     public approvedTxHash?: string;
@@ -86,6 +81,13 @@ export class RedeemRequest implements CompatEntity {
     }
     
 
+    static async getByStatus(status: string, options: GetOptions<CompatRedeemRequestProps>): Promise<RedeemRequest[]> {
+        // Inputs must be cast as the store interface has not been updated to support alternative ID types
+        const records = await store.getByField<CompatRedeemRequestProps>('RedeemRequest', 'status', status, options);
+        return records.map(record => this.create(record as unknown as RedeemRequestProps));
+    }
+    
+
 
     /**
      * Gets entities matching the specified filters and options.
@@ -104,9 +106,7 @@ export class RedeemRequest implements CompatEntity {
             record.owner,
             record.shares,
             record.requestTime,
-            record.approved,
-            record.executed,
-            record.cancelled,
+            record.status,
         );
         Object.assign(entity,record);
         return entity;
