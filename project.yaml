@@ -15,22 +15,15 @@ runner:
 schema:
   file: ./schema.graphql
 network:
-  chainId: '8453'
+  chainId: '31337'
   endpoint:
-    - https://mainnet.base.org
-    - https://base.llamarpc.com
-    - https://0xrpc.io/base
-    - https://base-mainnet.public.blastapi.io
-    - https://base.public.blockpi.network/v1/rpc/public
-    - https://api.zan.top/base-mainnet
-    - >-
-      https://base.api.onfinality.io/rpc?apikey=e76945fc-1f57-42a9-8bf4-d1b13e314835
+    - http://34.124.242.198:8545
 dataSources:
   - kind: ethereum/Runtime
-    startBlock: 34216120
+    startBlock: 23207235
     options:
       abi: seethv2
-      address: '0x90b97E83e22AFa2e6A96b3549A0E495D5Bae61aF'
+      address: '0xB7ca895F81F20e05A5eb11B05Cbaab3DAe5e23cd'
     assets:
       seethv2:
         file: ./abis/SeETHV2.json
@@ -52,10 +45,10 @@ dataSources:
                 Withdraw(address indexed sender, address indexed receiver,
                 address indexed owner, uint256 assets, uint256 shares)
   - kind: ethereum/Runtime
-    startBlock: 34216120
+    startBlock: 23207235
     options:
       abi: seethredeem
-      address: '0xFC4EE541377F3b6641c23CBE82F6f04388290421'
+      address: '0x2d13826359803522cCe7a4Cfa2c1b582303DD0B4'
     assets:
       seethredeem:
         file: ./abis/SeETHRedeem.json

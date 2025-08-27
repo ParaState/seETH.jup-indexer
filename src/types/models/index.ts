@@ -6,11 +6,5 @@ export {Deposit} from "./Deposit"
 
 export {Withdraw} from "./Withdraw"
 
-export {RedeemRequested} from "./RedeemRequested"
-
-export {RedeemCancelled} from "./RedeemCancelled"
-
-export {RedeemApproved} from "./RedeemApproved"
-
-export {RedeemExecuted} from "./RedeemExecuted"
+export {RedeemRequest} from "./RedeemRequest"
 

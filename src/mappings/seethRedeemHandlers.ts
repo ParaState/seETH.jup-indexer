@@ -1,4 +1,4 @@
-import { RedeemRequested, RedeemCancelled, RedeemApproved, RedeemExecuted } from "../types";
+import { RedeemRequest } from "../types";
 import { RedeemRequestedLog, RedeemCancelledLog, RedeemApprovedLog, RedeemExecutedLog } from "../types/abi-interfaces/SeETHRedeem";
 import assert from "assert";
 
@@ -18,13 +18,26 @@ export async function handleRedeemRequested(redeemRequested: RedeemRequestedLog)
   logger.info(`redeemRequested.args.shares: ${redeemRequested.args.shares}`);
   logger.info(`redeemRequested========================================`);
 
-  const record = RedeemRequested.create({
-    id: redeemRequested.transactionHash,
+  const requestId = redeemRequested.args.requestId.toString();
+  const owner = redeemRequested.args.owner;
+  const shares = BigInt(redeemRequested.args.shares.toString());
+  const requestTime = BigInt(redeemRequested.transaction.blockTimestamp.toString());
+  const timestamp = new Date(Number(redeemRequested.transaction.blockTimestamp) * 1000);
+
+  logger.info(`Creating new RedeemRequest: ${requestId} for owner: ${owner} with shares: ${shares}`);
+
+  const record = RedeemRequest.create({
+    id: requestId,
     blockHeight: BigInt(redeemRequested.blockNumber),
-    requestId: BigInt(redeemRequested.args.requestId.toString()),
-    owner: redeemRequested.args.owner.toLowerCase(),
-    shares: BigInt(redeemRequested.args.shares.toString()),
-    timestamp: new Date(Number(redeemRequested.transaction.blockTimestamp) * 1000),
+    owner: owner,
+    shares: shares,
+    requestTime: requestTime,
+    approved: false,
+    executed: false,
+    cancelled: false,
+    createdAt: timestamp,
+    updatedAt: timestamp,
+    requestedTxHash: redeemRequested.transactionHash,
   });
 
   await record.save();
@@ -46,16 +59,28 @@ export async function handleRedeemCancelled(redeemCancelled: RedeemCancelledLog)
   logger.info(`redeemCancelled.args.shares: ${redeemCancelled.args.shares}`);
   logger.info(`redeemCancelled========================================`);
 
-  const record = RedeemCancelled.create({
-    id: redeemCancelled.transactionHash,
-    blockHeight: BigInt(redeemCancelled.blockNumber),
-    requestId: BigInt(redeemCancelled.args.requestId.toString()),
-    owner: redeemCancelled.args.owner.toLowerCase(),
-    shares: BigInt(redeemCancelled.args.shares.toString()),
-    timestamp: new Date(Number(redeemCancelled.transaction.blockTimestamp) * 1000),
-  });
+  const requestId = redeemCancelled.args.requestId.toString();
+  const timestamp = new Date(Number(redeemCancelled.transaction.blockTimestamp) * 1000);
 
-  await record.save();
+  const cancelledAt = new Date(Number(redeemCancelled.transaction.blockTimestamp) * 1000);
+
+  logger.info(`Cancelling RedeemRequest: ${requestId}`);
+
+  const record = await RedeemRequest.get(requestId);
+  if (record) {
+    if (record.cancelled) {
+      logger.warn(`RedeemRequest ${requestId} already cancelled`);
+      return;
+    }
+
+    record.cancelled = true;
+    record.updatedAt = timestamp;
+    record.cancelledTxHash = redeemCancelled.transactionHash;
+    record.cancelledAt = cancelledAt;
+    await record.save();
+  } else {
+    logger.warn(`RedeemRequest ${requestId} not found for cancellation`);
+  }
 }
 
 // SeETH RedeemApproved event
@@ -74,16 +99,28 @@ export async function handleRedeemApproved(redeemApproved: RedeemApprovedLog): P
   logger.info(`redeemApproved.args.shares: ${redeemApproved.args.shares}`);
   logger.info(`redeemApproved========================================`);
 
-  const record = RedeemApproved.create({
-    id: redeemApproved.transactionHash,
-    blockHeight: BigInt(redeemApproved.blockNumber),
-    requestId: BigInt(redeemApproved.args.requestId.toString()),
-    owner: redeemApproved.args.owner.toLowerCase(),
-    shares: BigInt(redeemApproved.args.shares.toString()),
-    timestamp: new Date(Number(redeemApproved.transaction.blockTimestamp) * 1000),
-  });
+  const requestId = redeemApproved.args.requestId.toString();
+  const timestamp = new Date(Number(redeemApproved.transaction.blockTimestamp) * 1000);
 
-  await record.save();
+  const approvedAt = new Date(Number(redeemApproved.transaction.blockTimestamp) * 1000);
+
+  logger.info(`Approving RedeemRequest: ${requestId}`);
+
+  const record = await RedeemRequest.get(requestId);
+  if (record) {
+    if (record.approved) {
+      logger.warn(`RedeemRequest ${requestId} already approved`);
+      return;
+    }
+
+    record.approved = true;
+    record.updatedAt = timestamp;
+    record.approvedTxHash = redeemApproved.transactionHash;
+    record.approvedAt = approvedAt;
+    await record.save();
+  } else {
+    logger.warn(`RedeemRequest ${requestId} not found for approval`);
+  }
 }
 
 // SeETH RedeemExecuted event
@@ -103,15 +140,28 @@ export async function handleRedeemExecuted(redeemExecuted: RedeemExecutedLog): P
   logger.info(`redeemExecuted.args.assetsPaid: ${redeemExecuted.args.assetsPaid}`);
   logger.info(`redeemExecuted========================================`);
 
-  const record = RedeemExecuted.create({
-    id: redeemExecuted.transactionHash,
-    blockHeight: BigInt(redeemExecuted.blockNumber),
-    requestId: BigInt(redeemExecuted.args.requestId.toString()),
-    owner: redeemExecuted.args.owner.toLowerCase(),
-    shares: BigInt(redeemExecuted.args.shares.toString()),
-    assetsPaid: BigInt(redeemExecuted.args.assetsPaid.toString()),
-    timestamp: new Date(Number(redeemExecuted.transaction.blockTimestamp) * 1000),
-  });
+  const requestId = redeemExecuted.args.requestId.toString();
+  const assetsPaid = BigInt(redeemExecuted.args.assetsPaid.toString());
+  const timestamp = new Date(Number(redeemExecuted.transaction.blockTimestamp) * 1000);
 
-  await record.save();
+  const executedAt = new Date(Number(redeemExecuted.transaction.blockTimestamp) * 1000);
+
+  logger.info(`Executing RedeemRequest: ${requestId} with assetsPaid: ${assetsPaid}`);
+
+  const record = await RedeemRequest.get(requestId);
+  if (record) {
+    if (record.executed) {
+      logger.warn(`RedeemRequest ${requestId} already executed`);
+      return;
+    }
+
+    record.executed = true;
+    record.assetsPaid = assetsPaid;
+    record.updatedAt = timestamp;
+    record.executedTxHash = redeemExecuted.transactionHash;
+    record.executedAt = executedAt;
+    await record.save();
+  } else {
+    logger.warn(`RedeemRequest ${requestId} not found for execution`);
+  }
 }

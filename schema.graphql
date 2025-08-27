@@ -23,40 +23,28 @@ type Withdraw @entity {
   timestamp: Date
 }
 
-# SeETH Redeem Events
-type RedeemRequested @entity {
-  id: ID! # Transaction hash
+# SeETH Redeem Request - Unified entity for tracking redeem request lifecycle
+type RedeemRequest @entity {
+  id: ID! # requestId
   blockHeight: BigInt
-  requestId: BigInt! @index
   owner: String! @index
   shares: BigInt!
-  timestamp: Date
-}
-
-type RedeemCancelled @entity {
-  id: ID! # Transaction hash
-  blockHeight: BigInt
-  requestId: BigInt! @index
-  owner: String! @index
-  shares: BigInt!
-  timestamp: Date
-}
-
-type RedeemApproved @entity {
-  id: ID! # Transaction hash
-  blockHeight: BigInt
-  requestId: BigInt! @index
-  owner: String! @index
-  shares: BigInt!
-  timestamp: Date
-}
-
-type RedeemExecuted @entity {
-  id: ID! # Transaction hash
-  blockHeight: BigInt
-  requestId: BigInt! @index
-  owner: String! @index
-  shares: BigInt!
-  assetsPaid: BigInt!
-  timestamp: Date
+  requestTime: BigInt! # block.timestamp when request was created
+  # Request status
+  approved: Boolean! # whether the request has been approved
+  executed: Boolean! # whether the request has been executed
+  cancelled: Boolean! # whether the request has been cancelled
+  # timestamps
+  approvedAt: Date # timestamp when request was approved (null if not approved)
+  executedAt: Date # timestamp when request was executed (null if not executed)
+  cancelledAt: Date # timestamp when request was cancelled (null if not cancelled)
+  # amounts
+  assetsPaid: BigInt # amount of assets paid when executed (null if not executed)
+  createdAt: Date # timestamp when request was created
+  updatedAt: Date # timestamp when request was last updated
+  # Event tracking
+  requestedTxHash: String # transaction hash for RedeemRequested event
+  cancelledTxHash: String # transaction hash for RedeemCancelled event (null if not cancelled)
+  approvedTxHash: String # transaction hash for RedeemApproved event (null if not approved)
+  executedTxHash: String # transaction hash for RedeemExecuted event (null if not executed)
 }
