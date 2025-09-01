@@ -2,90 +2,46 @@
 # Add the `@index` or `@index(unique: true)` annotation after any non-key field
 # https://academy.subquery.network/build/graphql.html#indexing-by-non-primary-key-field
 
-type Transfer @entity {
+# ERC4626 Events
+type Deposit @entity {
   id: ID! # Transaction hash
   blockHeight: BigInt
-  to: String!
-  from: String!
-  value: BigInt!
-  contractAddress: String!
-}
-
-type Approval @entity {
-  id: ID! # Transaction hash
-  blockHeight: BigInt
-  owner: String!
-  spender: String!
-  value: BigInt!
-  contractAddress: String!
-}
-
-type StakedRecord @entity {
-  id: ID! # Transaction hash
-  pool: String
-  blockHeight: BigInt
-  staker: String
-  stakeToken: String
-  stakeAmount: BigInt
-  mintReceiver: String
-  mintToken: String
-  mintAmount: BigInt
+  owner: String! @index
+  assets: BigInt!
+  shares: BigInt!
   timestamp: Date
 }
 
-type Staker @entity {
-  id: ID! @dbType(type: "String") # kecash256( pool, staker)
-  pool: String # stake pool address
-  staker: String # staker address
-  stakeAmount: BigInt # total staked amount
-  mintAmount: BigInt # total minted amount
-}
-
-type UnstakeAccepted @entity {
-  id: ID!
-  txHash: String
-  pool: String
-  blockHeight: BigInt
-  staker: String
-  unstakeToken: String
-  unstakeAmount: BigInt
-  redeemEarning: BigInt
-  withdrawEth: BigInt
-  repayUsdc: BigInt
-  status: String # "pending", "success", "failed"
-  timestamp: Date
-}
-
-type ReferralBound @entity {
+type Withdraw @entity {
   id: ID! # Transaction hash
   blockHeight: BigInt
-  user: String! @index
-  referrer: String! @index
+  sender: String! @index
+  receiver: String! @index
+  owner: String! @index
+  assets: BigInt!
+  shares: BigInt!
   timestamp: Date
 }
 
-type RemoteBalanceUpdated @entity {
-  id: ID! # Transaction hash
+# SeETH Redeem Request - Unified entity for tracking redeem request lifecycle
+type RedeemRequest @entity {
+  id: ID! # requestId
   blockHeight: BigInt
-  contractAddress: String!
-  opType: Int! # 0 for ADD, 1 for CLAIM
-  amount: BigInt!
-  timestamp: Date
-}
-
-type RiskBalanceUpdated @entity {
-  id: ID! # Transaction hash
-  blockHeight: BigInt
-  contractAddress: String!
-  newBalance: BigInt!
-  timestamp: Date
-}
-
-type UsdVaultWithdraw @entity {
-  id: ID! # Transaction hash
-  blockHeight: BigInt
-  contractAddress: String!
-  to: String! @index
-  amount: BigInt!
-  timestamp: Date
+  owner: String! @index
+  shares: BigInt!
+  requestTime: BigInt! # block.timestamp when request was created
+  status: String! @index # current status: pending, approved, executed, cancelled
+  assetsPaid: BigInt # amount of assets paid when executed (null if not executed)
+  createdAt: Date # timestamp when request was created
+  updatedAt: Date # timestamp when request was last updated
+  # State transition timestamps
+  requestedAt: Date # when request was created
+  approvedAt: Date # when request was approved (null if not approved)
+  executedAt: Date # when request was executed (null if not executed)
+  cancelledAt: Date # when request was cancelled (null if not cancelled)
+  # Event tracking
+  requestedTxHash: String # transaction hash for RedeemRequested event
+  cancelledTxHash: String # transaction hash for RedeemCancelled event (null if not cancelled)
+  approvedTxHash: String # transaction hash for RedeemApproved event (null if not approved)
+  executedTxHash: String # transaction hash for RedeemExecuted event (null if not executed)
 }

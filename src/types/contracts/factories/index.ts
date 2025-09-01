@@ -3,12 +3,12 @@
 /* eslint-disable */
 
 
-export { Erc20Abi__factory } from "./Erc20Abi__factory";
-
 export { Erc20__factory } from "./Erc20__factory";
 
-export { SsethAbi__factory } from "./SsethAbi__factory";
+export { SeETHRedeem__factory } from "./SeETHRedeem__factory";
 
-export { Sseth__factory } from "./Sseth__factory";
+export { SeETHV2__factory } from "./SeETHV2__factory";
+
+export { Seeth__factory } from "./Seeth__factory";
 
 export { Usdvault__factory } from "./Usdvault__factory";

@@ -1,5 +1,5 @@
 {
-  "name": "ssETH.jup-indexer",
+  "name": "seETH.jup-indexer",
   "version": "0.0.1",
   "description": "This project can be use as a starting point for developing your new Ethereum SubQuery project",
   "main": "dist/index.js",
@@ -7,6 +7,7 @@
     "build": "subql codegen && subql build",
     "codegen": "subql codegen",
     "clean": "rm -rf .data/postgres",
+    "reset": "docker compose down && yarn clean",
     "start:docker": "docker compose pull && docker compose up --remove-orphans",
     "dev": "subql codegen && subql build && docker compose pull && docker compose up --remove-orphans",
     "prepack": "rm -rf dist && npm run build",
@@ -20,7 +21,6 @@
     "schema.graphql",
     "project.yaml"
   ],
-  "author": "five",
   "license": "MIT",
   "dependencies": {
     "@subql/types-ethereum": "4.1.0",
