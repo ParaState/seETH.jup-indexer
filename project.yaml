@@ -27,10 +27,10 @@ network:
       https://base.api.onfinality.io/rpc?apikey=e76945fc-1f57-42a9-8bf4-d1b13e314835
 dataSources:
   - kind: ethereum/Runtime
-    startBlock: 34969048
+    startBlock: 35043605
     options:
       abi: seethv2
-      address: '0xE868F84c2EE3918450AcEbaBab1B0d92ED358424'
+      address: '0x8080c4b4e46dcebfccCa6AEbc802CB9229250A2E'
     assets:
       seethv2:
         file: ./abis/SeETHV2.json
@@ -52,10 +52,10 @@ dataSources:
                 Withdraw(address indexed sender, address indexed receiver,
                 address indexed owner, uint256 assets, uint256 shares)
   - kind: ethereum/Runtime
-    startBlock: 34969048
+    startBlock: 35043605
     options:
       abi: seethredeem
-      address: '0xe91E52927400BA03f5EC8B33655917d314f0388D'
+      address: '0x8e4d15fe7E0Aa8884B19D520c7d33d40fB19eDe8'
     assets:
       seethredeem:
         file: ./abis/SeETHRedeem.json
